@@ -1,0 +1,8 @@
+.cache/
+build/
+.clangd
+.envrc
+compile_commands.json
+*.d
+*.o
+*.so
