@@ -1,20 +1,5 @@
-#include <stddef.h>
+#include "sohomot/sohomot.h"
 #include <stdio.h>
-#include <stdlib.h>
-
-typedef struct SingleTest
-{
-	const char* test_name;
-	struct SingleTest* next;
-} SingleTest;
-
-typedef struct TestSuite
-{
-	const char* suite_name;
-	size_t tests_n;
-	SingleTest* single_test;
-	struct TestSuite* next;
-} TestSuite;
 
 int main(void)
 {
@@ -29,5 +14,16 @@ int main(void)
 	TestSuite s1 = {"String", 4, &t4, nullptr};
 	TestSuite s2 = {"Ctype", 2, &t6, &s1};
 	TestSuite s3 = {"Stdio", 2, &t8, &s2};
-	return 0;
+
+	TestSuite* ts = &s3;
+
+	while (ts != nullptr)
+	{
+		while (ts->single_test != nullptr)
+		{
+			printf("%s.%s\n", ts->suite_name, ts->single_test->test_name);
+			ts->single_test = ts->single_test->next;
+		}
+		ts = ts->next;
+	}
 }
