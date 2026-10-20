@@ -5,4 +5,5 @@ build/
 compile_commands.json
 *.d
 *.o
+*.scratch
 *.so
