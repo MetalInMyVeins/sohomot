@@ -7,7 +7,7 @@ CFLAGS := \
 	-Wall -Wextra -Werror -pedantic \
 	-Wno-unused-variable \
 	-Wno-unused-parameter \
-	-Wno-unused-but-set-variable
+	-Wno-unused-but-set-variable \
 	-Iinclude
 
 BUILD := build
