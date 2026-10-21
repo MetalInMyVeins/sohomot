@@ -1,9 +1,5 @@
 # sohomot
 
-<!-- <p align="center"> -->
-<!--   <img src="./res/sohomot_bangla.png" /> -->
-<!-- </p> -->
-
 <table>
   <tr>
     <td align="center">
@@ -24,3 +20,8 @@ This is a very minimal gtest-like test framework written in C for C codebases. T
 # LLM Ban
 
 This is an educational project. LLMs are strictly banned from contributing.
+The images are AI-generated.
+
+# License
+
+MIT
