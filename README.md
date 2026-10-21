@@ -1,8 +1,21 @@
 # sohomot
 
-<p align="center">
-  <img src="./res/sohomot_bangla.png" />
-</p>
+<!-- <p align="center"> -->
+<!--   <img src="./res/sohomot_bangla.png" /> -->
+<!-- </p> -->
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="./res/sohomot_bangla.png" width="400" />
+      <br />
+    </td>
+    <td align="center">
+      <img src="./res/sohomot_english.png" width="400" />
+      <br />
+    </td>
+  </tr>
+</table>
 
 This is a very minimal gtest-like test framework written in C for C codebases. This is explicitly created to test my custom minimal libc implementation [lobon](https://github.com/MetalInMyVeins/lobon).
 
