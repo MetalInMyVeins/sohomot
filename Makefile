@@ -65,7 +65,7 @@ BUILDDIR := build
 TARET_DEB := $(BUILDDIR)/sohomot_main
 TARET_SAN := $(BUILDDIR)/sohomot_main_san
 
-$(TARET_DEB): src/main.c
+$(TARET_DEB): src/main.c src/suite.c
 	@mkdir -p build/
 	$(CC) $(CFLAGS_COMMON) $(CFLAGS_OPT0) $(CFLAGS_DEBUG) \
 		$(LDFLAGS_COMMON) $(INCLUDEDIR) $^ -o $@
@@ -73,7 +73,7 @@ $(TARET_DEB): src/main.c
 .PHONY: deb
 deb: $(TARET_DEB)
 
-$(TARET_SAN): src/main.c
+$(TARET_SAN): src/main.c src/suite.c
 	@mkdir -p build/
 	$(CC) $(CFLAGS_COMMON) $(CFLAGS_OPT0) $(CFLAGS_DEBUG) $(CFLAGS_SAN) \
 		$(LDFLAGS_COMMON) $(LDFLAGS_SAN) $(INCLUDEDIR) \
