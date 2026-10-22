@@ -7,8 +7,8 @@
 #include <string.h>
 
 static struct test_suite* g_suites = nullptr;
-static const uint32_t G_SUITS_PACKET = 256;
-static uint32_t g_suites_cap = G_SUITS_PACKET;
+static const uint32_t G_SUITES_PACKET = 256;
+static uint32_t g_suites_cap = G_SUITES_PACKET;
 static uint32_t g_suites_last_empty_idx = 0;
 static int g_errno = 0;
 
@@ -61,7 +61,7 @@ bool suites_push(struct test_suite* ts)
 
 bool suites_realloc(void)
 {
-	uint32_t temp_cap = g_suites_cap + G_SUITS_PACKET;
+	uint32_t temp_cap = g_suites_cap + G_SUITES_PACKET;
 	struct test_suite* temp = calloc(temp_cap, sizeof(*g_suites));
 	g_errno = errno;
 	if (temp == nullptr)
