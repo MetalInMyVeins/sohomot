@@ -4,7 +4,6 @@ LD ?= ld.lld
 CFLAGS_COMMON := \
 	-std=c23 \
 	-Wall -Wextra -Wpedantic -pedantic-errors -Werror \
-	-Wno-unused-variable -Wno-unused-parameter \
 	-Wshadow \
 	-Wconversion -Wsign-conversion \
 	-Wcast-align -Wcast-qual \
