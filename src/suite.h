@@ -1,16 +1,23 @@
 #ifndef SUITE_H
 #define SUITE_H
 
+#include "sohomot/sohomot.h"
 #include <stdint.h>
 
-struct single_test
+struct sohomot_func_node
 {
+	sohomot_func func;
+	const char* suite_name;
 	const char* test_name;
+	struct sohomot_func_node* next;
 };
 
-struct test_suite
+struct __attribute__((aligned(32))) test_suite
 {
 	const char* suite_name;
+	struct sohomot_func_node* nodes_holder;
+	uint32_t holder_len;
+	uint32_t holder_cap;
 };
 
 bool suites_init(void);
