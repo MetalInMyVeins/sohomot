@@ -4,12 +4,16 @@ endif
 ifeq ($(origin LINKER),undefined)
 	LINKER := $(if $(shell command -v mold 2>/dev/null),mold,$(if $(shell command -v lld 2>/dev/null),lld,bfd))
 endif
+ifeq ($(origin CCACHE),undefined)
+	CCACHE := $(if $(shell command -v ccache 2>/dev/null),ccache)
+endif
 STRIP := strip
 
 .PHONY: info
 info:
 	@echo -e "Selected compiler: $(CC)"
 	@echo -e "Selected linker: $(LINKER)"
+	@echo -e "Compiler cache: $(if $(CCACHE),$(CCACHE),none)"
 	@echo -e "Available targets:"
 	@echo -e "    deb: do a debug build"
 	@echo -e "    san: do a sanitizer build"
@@ -83,7 +87,7 @@ SRCS_REL_OBJ := $(patsubst $(SRCDIR)/%.c, $(BUILDDIR)/$(RELDIR)/%.c.o, $(SRCS))
 
 $(BUILDDIR)/$(DEBDIR)/%.c.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS_COMMON) $(CFLAGS_OPT0) $(CFLAGS_DEBUG) \
+	$(CCACHE) $(CC) $(CFLAGS_COMMON) $(CFLAGS_OPT0) $(CFLAGS_DEBUG) \
 		$(INCLUDEDIR) -c -fPIC $(DEPS_FLAGS) \
 		$< -o $@
 
@@ -107,7 +111,7 @@ deb: $(BUILDDIR)/$(DEBDIR)/$(LIBDIR)/$(TARGET_DEB_FULL)
 
 $(BUILDDIR)/$(SANDIR)/%.c.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS_COMMON) $(CFLAGS_OPT0) $(CFLAGS_DEBUG) $(CFLAGS_SAN) \
+	$(CCACHE) $(CC) $(CFLAGS_COMMON) $(CFLAGS_OPT0) $(CFLAGS_DEBUG) $(CFLAGS_SAN) \
 		$(INCLUDEDIR) -c -fPIC $(DEPS_FLAGS) \
 		$< -o $@
 
@@ -130,7 +134,7 @@ san: $(BUILDDIR)/$(SANDIR)/$(LIBDIR)/$(TARGET_SAN_FULL)
 
 $(BUILDDIR)/$(RELDIR)/%.c.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS_COMMON) $(CFLAGS_OPT3) $(CFLAGS_RELEASE) $(CFLAGS_LTO) \
+	$(CCACHE) $(CC) $(CFLAGS_COMMON) $(CFLAGS_OPT3) $(CFLAGS_RELEASE) $(CFLAGS_LTO) \
 		$(INCLUDEDIR) -c -fPIC $(DEPS_FLAGS) \
 		$< -o $@
 
