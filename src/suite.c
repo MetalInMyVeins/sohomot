@@ -10,6 +10,17 @@ static struct test_suite* g_suites = nullptr;
 static uint32_t g_suites_cap = PACKET_SIZE;
 static uint32_t g_suites_last_index = 0;
 
+static const char* const COLOR_DEFAULT = "\033[0m";
+static const char* const COLOR_GREEN = "\033[0;32m";
+// static const char* const COLOR_RED = "\033[0;31m";
+
+static const char* const g_bar_equal = "[==========]";
+static const char* const g_bar_minus = "[----------]";
+static const char* const g_bar_run = "[ RUN      ]";
+static const char* const g_bar_ok = "[       OK ]";
+// static const char* const g_bar_passed = "[  PASSED  ]";
+// static const char* const g_bar_failed = "[  FAILED  ]";
+
 bool suites_init(void)
 {
 	g_suites = calloc(PACKET_SIZE, sizeof(*g_suites));
@@ -143,5 +154,47 @@ void clean_suites()
 		free((g_suites + i)->nodes_holder);
 		(g_suites + i)->holder_last_index = 0;
 		(g_suites + i)->holder_cap = 0;
+	}
+}
+
+void print_suites_status(void)
+{
+	uint32_t total_suites = g_suites_last_index;
+	if (total_suites == 0)
+	{
+		printf("No tests found.\nAbort.\n");
+		return;
+	}
+	uint32_t total_tests = 0;
+	for (uint32_t i = 0; i < g_suites_last_index; ++i)
+	{
+		total_tests += (g_suites + i)->holder_last_index;
+	}
+	const char* str_suites = "suites";
+	const char* str_tests = "tests";
+	if (total_suites == 1)
+		str_suites = "suite";
+	if (total_tests == 1)
+		str_tests = "test";
+	printf("%s%s%s Running %u %s from %u test %s.\n", COLOR_GREEN, g_bar_equal, COLOR_DEFAULT, total_tests, str_tests, total_suites, str_suites);
+	printf("%s%s%s Global test environment set-up.\n", COLOR_GREEN, g_bar_minus, COLOR_DEFAULT);
+
+	for (uint32_t i = 0; i < g_suites_last_index; ++i)
+	{
+		struct test_suite* current_suite = (g_suites + i);
+		struct sohomot_func_node* current_holder = current_suite->nodes_holder;
+		uint32_t per_suite_test = current_suite->holder_last_index;
+		if (per_suite_test == 1)
+			str_tests = "test";
+		else
+			str_tests = "tests";
+		printf("%s%s%s %u %s from %s\n", COLOR_GREEN, g_bar_minus, COLOR_DEFAULT, per_suite_test, str_tests, current_suite->suite_name);
+		for (uint32_t j = 0; j < per_suite_test; ++j)
+		{
+			printf("%s%s%s %s.%s\n", COLOR_GREEN, g_bar_run, COLOR_DEFAULT, current_suite->suite_name, current_holder[j].test_name);
+			current_holder[j].func();
+			printf("%s%s%s %s.%s\n", COLOR_GREEN, g_bar_ok, COLOR_DEFAULT, current_suite->suite_name, current_holder[j].test_name);
+		}
+		printf("%s%s%s %u %s from %s\n\n", COLOR_GREEN, g_bar_minus, COLOR_DEFAULT, per_suite_test, str_tests, current_suite->suite_name);
 	}
 }
