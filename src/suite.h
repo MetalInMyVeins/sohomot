@@ -12,7 +12,7 @@ struct sohomot_func_node
 	struct sohomot_func_node* next;
 };
 
-struct __attribute__((aligned(32))) test_suite
+struct test_suite
 {
 	const char* suite_name;
 	struct sohomot_func_node* nodes_holder;
