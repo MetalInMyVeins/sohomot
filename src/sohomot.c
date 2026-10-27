@@ -2,6 +2,7 @@
 #include <errno.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct sohomot_func_node
 {
@@ -21,6 +22,8 @@ void register_sohomot_func(sohomot_func func, const char* suitename, const char*
 	if (g_sfn == nullptr)
 	{
 		g_sfn = calloc(1, sizeof(*g_sfn));
+		if (g_sfn == nullptr)
+			return;
 		g_sfn->func = func;
 		g_sfn->suite_name = suitename;
 		g_sfn->test_name = testname;
@@ -31,6 +34,8 @@ void register_sohomot_func(sohomot_func func, const char* suitename, const char*
 	else
 	{
 		g_sfn->next = calloc(1, sizeof(*g_sfn));
+		if (g_sfn->next == nullptr)
+			return;
 		g_sfn = g_sfn->next;
 		g_sfn->func = func;
 		g_sfn->suite_name = suitename;
@@ -71,17 +76,23 @@ void free_arr_func_nodes(void)
 	arr_func_nodes = nullptr;
 }
 
-// struct sohomot_func_node* get_sohomot_func_node(void)
-// {
-// 	return g_sfn_head;
-// }
-//
-// uint32_t get_sohomot_func_node_len(void)
-// {
-// 	return g_node_len;
-// }
-//
-// struct sohomot_func_node* get_arr_func_nodes(void)
-// {
-// 	return arr_func_nodes;
-// }
+struct sohomot_func_node* get_nodes(void)
+{
+	return arr_func_nodes;
+}
+
+uint32_t get_total_nodes(void)
+{
+	return g_node_len;
+}
+
+bool do_nodes_match(struct sohomot_func_node* n1, struct sohomot_func_node* n2)
+{
+	if (n1->func != n2->func)
+		return false;
+	if (strcmp(n1->suite_name, n2->suite_name) != 0)
+		return false;
+	if (strcmp(n1->test_name, n2->test_name) != 0)
+		return false;
+	return true;
+}

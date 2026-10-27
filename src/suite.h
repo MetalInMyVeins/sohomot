@@ -16,11 +16,13 @@ struct __attribute__((aligned(32))) test_suite
 {
 	const char* suite_name;
 	struct sohomot_func_node* nodes_holder;
-	uint32_t holder_len;
 	uint32_t holder_cap;
+	uint32_t holder_last_index;
 };
 
 bool suites_init(void);
 void suites_free(void);
+bool setup_suites(struct sohomot_func_node* nodes, uint32_t nodes_len);
+void clean_suites();
 
 #endif // SUITE_H

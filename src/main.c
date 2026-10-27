@@ -9,10 +9,21 @@ int main(void)
 {
 	if (init_arr_func_nodes() == false)
 	{
-		fprintf(stderr, "Error: %s\n", strerror(errno));
+		fprintf(stderr, "sohomot: %s\n", strerror(errno));
 		return EXIT_FAILURE;
 	}
-	suites_init();
+	if (suites_init() == false)
+	{
+		fprintf(stderr, "sohomot: %s\n", strerror(errno));
+		return EXIT_FAILURE;
+	}
+	bool suites_setup = setup_suites(get_nodes(), get_total_nodes());
+	if (suites_setup == false)
+	{
+		fprintf(stderr, "sohomot: %s\n", strerror(errno));
+		return EXIT_FAILURE;
+	}
+	clean_suites();
 	suites_free();
 	free_arr_func_nodes();
 	return EXIT_SUCCESS;
