@@ -1,6 +1,7 @@
 #include "suite.h"
 #include "sohomot/sohomot.h"
 #include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -46,7 +47,7 @@ static bool suites_holder_realloc(struct test_suite* suite)
 {
 	uint32_t temp_holder_cap = suite->holder_cap + PACKET_SIZE;
 	struct sohomot_func_node* temp_holder = calloc(temp_holder_cap, sizeof(*temp_holder));
-	if (temp_holder == false)
+	if (temp_holder == nullptr)
 		return false;
 	errno = 0;
 	for (uint32_t i = 0; i < suite->holder_last_index; ++i)
@@ -61,9 +62,7 @@ static bool suites_holder_realloc(struct test_suite* suite)
 
 static struct test_suite* search_belonging_suite(struct sohomot_func_node* node)
 {
-	if (g_suites_last_index == 0)
-		return nullptr;
-	for (uint32_t i = 0; i <= g_suites_last_index; ++i)
+	for (uint32_t i = 0; i < g_suites_last_index; ++i)
 	{
 		if (strcmp((g_suites + i)->suite_name, node->suite_name) == 0)
 			return g_suites + i;
@@ -116,20 +115,22 @@ bool setup_suites(struct sohomot_func_node* nodes, uint32_t nodes_len)
 					return false;
 			}
 			push_node_in_suite(found_suite, current_node);
-			break;
 		}
 		else
 		{
 			struct test_suite* new_suite = create_empty_suite();
+			if (new_suite == nullptr)
+				return false;
+			errno = 0;
 			if (g_suites_last_index == g_suites_cap)
 			{
 				if (suites_realloc() == false)
 					return false;
 			}
+			new_suite->suite_name = current_node->suite_name;
 			push_node_in_suite(new_suite, current_node);
 			push_suite_in_suites(new_suite);
 			free_empty_suite(new_suite);
-			break;
 		}
 	}
 	return true;
@@ -140,5 +141,7 @@ void clean_suites()
 	for (uint32_t i = 0; i < g_suites_last_index; ++i)
 	{
 		free((g_suites + i)->nodes_holder);
+		(g_suites + i)->holder_last_index = 0;
+		(g_suites + i)->holder_cap = 0;
 	}
 }
