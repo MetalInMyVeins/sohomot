@@ -7,6 +7,8 @@
 
 int main(void)
 {
+	setvbuf(stdout, nullptr, _IONBF, 0);
+	setvbuf(stderr, nullptr, _IONBF, 0);
 	if (init_arr_func_nodes() == false)
 	{
 		fprintf(stderr, "sohomot: %s\n", strerror(errno));
