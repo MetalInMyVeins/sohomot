@@ -78,12 +78,17 @@ TEST(String, Equality)
 
 Compile and run:
 ```bash
-clang -std=c23 test.c -o test -Iinclude -Lbuild/rel/lib -lsohomot_main -Wl,-rpath=build/rel/lib
+clang -std=c23 test.c -o test \
+        -Iinclude \
+        -Lbuild/rel/lib \
+        -lsohomot_main \
+        -Wl,-rpath=build/rel/lib
+
 ./test
 ```
 
 Output:
-```
+```diff
 [==========] Running 3 tests from 2 test suites.
 [----------] Global test environment set-up.
 [----------] 2 tests from Integral
