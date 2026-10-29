@@ -43,7 +43,7 @@ make rel
 
 This would build the library in `build/rel/lib/`. The target would be `libsohomot_main.so` which would be symlinked to `libsohomot_main.so.0.1.0`.
 
-The main header file is located at `include/sohomot/sohomot.h`.
+The main header file would be located at `include/sohomot/sohomot.h`.
 
 To use the library, write a C program with no `main()`:
 
@@ -94,7 +94,7 @@ clang -std=c23 test.c -o test \
 ./test
 ```
 
-Output:
+The output quality is arguably better than gtest:
 ```diff
 [==========] Running 3 tests from 2 test suites.
 [----------] Global test environment set-up.
