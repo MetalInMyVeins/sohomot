@@ -1,6 +1,7 @@
 #include "sohomot/sohomot.h"
 #include <errno.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -24,7 +25,10 @@ void register_sohomot_func(sohomot_func func, \
 	{
 		g_sfn = calloc(1, sizeof(*g_sfn));
 		if (g_sfn == nullptr)
+		{
+			fprintf(stderr, "sohomot: failed to register test\n");
 			return;
+		}
 		g_sfn->func = func;
 		g_sfn->suite_name = suitename;
 		g_sfn->test_name = testname;
@@ -36,7 +40,10 @@ void register_sohomot_func(sohomot_func func, \
 	{
 		g_sfn->next = calloc(1, sizeof(*g_sfn));
 		if (g_sfn->next == nullptr)
+		{
+			fprintf(stderr, "sohomot: failed to register test\n");
 			return;
+		}
 		g_sfn = g_sfn->next;
 		g_sfn->func = func;
 		g_sfn->suite_name = suitename;
