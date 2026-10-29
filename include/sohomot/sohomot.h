@@ -23,6 +23,8 @@ static const char* str_expectation_not_met = "Expectation not met for these valu
 static const char* str_lhs = "LHS:";
 static const char* str_rhs = "RHS:";
 
+bool has_failed_test(void);
+
 #define TEST(Suite, Test) \
 	void sohomot_##Suite##_##Test(void); \
 	__attribute__((constructor)) \

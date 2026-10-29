@@ -32,6 +32,12 @@ struct failed_node
 static struct failed_node* g_failed_tests = nullptr;
 static struct failed_node* g_failed_tests_head = nullptr;
 static uint32_t n_failed = 0;
+static bool g_has_failed_test = false;
+
+bool has_failed_test(void)
+{
+	return g_has_failed_test;
+}
 
 bool suites_init(void)
 {
@@ -341,6 +347,7 @@ bool run_and_print(void)
 				COLOR_DEFAULT, total_tests - n_failed);
 	if (n_failed != 0)
 	{
+		g_has_failed_test = true;
 		if (n_failed == 1)
 			printf("%s%s%s %u test, listed below:\n", COLOR_RED, \
 					g_bar_failed, COLOR_DEFAULT, n_failed);

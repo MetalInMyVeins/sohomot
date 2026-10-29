@@ -34,5 +34,7 @@ int main(void)
 	clean_suites();
 	suites_free();
 	free_arr_func_nodes();
+	if (has_failed_test() == true)
+		return EXIT_FAILURE;
 	return EXIT_SUCCESS;
 }
