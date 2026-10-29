@@ -1,5 +1,6 @@
 #include "suite.h"
 #include "sohomot/sohomot.h"
+#include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
 #include <stdio.h>
@@ -191,6 +192,24 @@ bool expect_streq(const char* a, const char* b)
 		++b;
 	}
 	if (*a != *b)
+		status = false;
+	return status;
+}
+
+bool expect_strcase_eq(const char* a, const char* b)
+{
+	if (a == nullptr || b == nullptr)
+		return false;
+	if (a == b)
+		return true;
+
+	bool status = true;
+	while (*a != '\0' && tolower(*a) == tolower(*b))
+	{
+		++a;
+		++b;
+	}
+	if (tolower(*a) != tolower(*b))
 		status = false;
 	return status;
 }

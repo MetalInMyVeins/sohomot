@@ -16,6 +16,7 @@ bool do_nodes_match(struct sohomot_func_node* n1, struct \
 		sohomot_func_node* n2);
 void set_expect_passed(bool passed);
 bool expect_streq(const char* a, const char* b);
+bool expect_strcase_eq(const char* a, const char* b);
 
 static const char* str_equality = "Expected equality of these values:";
 static const char* str_expectation_not_met = "Expectation not met for these values:";
@@ -216,6 +217,38 @@ void print_default(void);
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_expectation_not_met); \
 			printf("    Should be: LHS != RHS\n"); \
+			PRINT(TYPESTR(A), #A, A, str_lhs); \
+			PRINT(TYPESTR(B), #B, B, str_rhs); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
+#define EXPECT_STRCASEEQ(A, B) \
+	do \
+	{ \
+		const char* _a = (A); \
+		const char* _b = (B); \
+		if (!expect_strcase_eq(_a, _b)) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("Expected case equality of these values:\n"); \
+			PRINT(TYPESTR(A), #A, A, str_lhs); \
+			PRINT(TYPESTR(B), #B, B, str_rhs); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
+#define EXPECT_STRCASENE(A, B) \
+	do \
+	{ \
+		const char* _a = (A); \
+		const char* _b = (B); \
+		if (expect_strcase_eq(_a, _b)) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("Expected case inequality of these values:\n"); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
 			printf("\n"); \
