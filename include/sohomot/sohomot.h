@@ -70,6 +70,7 @@ void print_default(void);
 	unsigned long long: "unsigned long long", \
 	char*: "char*", \
 	const char*: "const char*", \
+	bool: "bool", \
 	default: "unknown" \
 )
 
@@ -251,6 +252,21 @@ void print_default(void);
 			printf("Expected case inequality of these values:\n"); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
+#define EXPECT_TRUE(A) \
+	do \
+	{ \
+		typeof(A) _a = (A); \
+		if (!(_a == true)) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("Expectation not met:\n"); \
+			printf("    Should be: (%s) %s == true\n", TYPESTR(A), #A); \
+			printf("    Got: (%s) %s == false\n", TYPESTR(A), #A); \
 			printf("\n"); \
 			set_expect_passed(false); \
 		} \
