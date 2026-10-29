@@ -155,4 +155,21 @@ void print_default(void);
 		} \
 	} while (false)
 
+#define EXPECT_LE(A, B) \
+	do \
+	{ \
+		typeof(A) _a = (A); \
+		typeof(B) _b = (B); \
+		if (_a > _b) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("%s\n", str_expectation_not_met); \
+			printf("    Should be: LHS <= RHS\n"); \
+			PRINT(TYPESTR(A), #A, A, str_lhs); \
+			PRINT(TYPESTR(B), #B, B, str_rhs); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
 #endif // SOHOMOT_H
