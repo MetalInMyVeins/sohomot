@@ -236,6 +236,13 @@ bool expect_long_double_eq(const long double a, const long double b)
 	return false;
 }
 
+bool expect_float_eq(const float a, const float b)
+{
+	if (fabsf(a - b) < FLT_EPSILON)
+		return true;
+	return false;
+}
+
 static bool feed_failed_tests(char* name)
 {
 	if (g_failed_tests == nullptr)
@@ -467,6 +474,13 @@ void print_long_double(const char* type, const char* name, \
 {
 	printf("    %s (%s) %s -> %.18Lf\n", \
 			side, type, name, x);
+}
+
+void print_float(const char* type, const char* name, \
+		const float x, const char* side)
+{
+	printf("    %s (%s) %s -> %.6f\n", \
+			side, type, name, (double)x);
 }
 
 void print_str(const char* type, const char* name, \
