@@ -272,4 +272,19 @@ void print_default(void);
 		} \
 	} while (false)
 
+#define EXPECT_FALSE(A) \
+	do \
+	{ \
+		typeof(A) _a = (A); \
+		if (!(_a == false)) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("Expectation not met:\n"); \
+			printf("    Should be: (%s) %s == false\n", TYPESTR(A), #A); \
+			printf("    Got: (%s) %s == true\n", TYPESTR(A), #A); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
 #endif // SOHOMOT_H
