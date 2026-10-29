@@ -6,15 +6,18 @@
 
 struct sohomot_func_node;
 typedef void (*sohomot_func)(void);
-void register_sohomot_func(sohomot_func, const char* suitename, const char* testname);
+void register_sohomot_func(sohomot_func, const char* suitename, \
+		const char* testname);
 bool init_arr_func_nodes(void);
 void free_arr_func_nodes(void);
 struct sohomot_func_node* get_nodes(void);
 uint32_t get_total_nodes(void);
-bool do_nodes_match(struct sohomot_func_node* n1, struct sohomot_func_node* n2);
+bool do_nodes_match(struct sohomot_func_node* n1, struct \
+		sohomot_func_node* n2);
 void set_expect_passed(bool passed);
 
-static const char* str_equality = "Expected equality of these values:";
+static const char* str_equality = "Expected equality of these \
+								   values:";
 static const char* str_lhs = "LHS:";
 static const char* str_rhs = "RHS:";
 
@@ -27,16 +30,26 @@ static const char* str_rhs = "RHS:";
 	} \
 	void sohomot_##Suite##_##Test(void)
 
-void print_int8(const char* type, const char* name, const int8_t x, const char* side);
-void print_uint8(const char* type, const char* name, const uint8_t x, const char* side);
-void print_int16(const char* type, const char* name, const int16_t x, const char* side);
-void print_uint16(const char* type, const char* name, const uint16_t x, const char* side);
-void print_int32(const char* type, const char* name, const int32_t x, const char* side);
-void print_uint32(const char* type, const char* name, const uint32_t x, const char* side);
-void print_int64(const char* type, const char* name, const int64_t x, const char* side);
-void print_uint64(const char* type, const char* name, const uint64_t x, const char* side);
-void print_long_long(const char* type, const char* name, const long long x, const char* side);
-void print_unsigned_long_long(const char* type, const char* name, const unsigned long long x, const char* side);
+void print_int8(const char* type, const char* name, \
+		const int8_t x, const char* side);
+void print_uint8(const char* type, const char* name, \
+		const uint8_t x, const char* side);
+void print_int16(const char* type, const char* name, \
+		const int16_t x, const char* side);
+void print_uint16(const char* type, const char* name,
+		const uint16_t x, const char* side);
+void print_int32(const char* type, const char* name, \
+		const int32_t x, const char* side);
+void print_uint32(const char* type, const char* name, \
+		const uint32_t x, const char* side);
+void print_int64(const char* type, const char* name, \
+		const int64_t x, const char* side);
+void print_uint64(const char* type, const char* name, \
+		const uint64_t x, const char* side);
+void print_long_long(const char* type, const char* name, \
+		const long long x, const char* side);
+void print_unsigned_long_long(const char* type, const char* name, \
+		const unsigned long long x, const char* side);
 void print_default(void);
 
 #define TYPESTR(X) _Generic((X), \

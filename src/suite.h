@@ -22,7 +22,8 @@ struct test_suite
 
 bool suites_init(void);
 void suites_free(void);
-bool setup_suites(struct sohomot_func_node* nodes, uint32_t nodes_len);
+bool setup_suites(struct sohomot_func_node* nodes, \
+		uint32_t nodes_len);
 void clean_suites();
 bool run_and_print(void);
 

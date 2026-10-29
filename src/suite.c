@@ -51,7 +51,8 @@ void suites_free(void)
 static bool suites_realloc(void)
 {
 	uint32_t temp_suites_cap = g_suites_cap + PACKET_SIZE;
-	struct test_suite* temp_suites = calloc(temp_suites_cap, sizeof(*g_suites));
+	struct test_suite* temp_suites = calloc(temp_suites_cap, \
+			sizeof(*g_suites));
 	if (temp_suites == nullptr)
 		return false;
 	errno = 0;
@@ -68,7 +69,8 @@ static bool suites_realloc(void)
 static bool suites_holder_realloc(struct test_suite* suite)
 {
 	uint32_t temp_holder_cap = suite->holder_cap + PACKET_SIZE;
-	struct sohomot_func_node* temp_holder = calloc(temp_holder_cap, sizeof(*temp_holder));
+	struct sohomot_func_node* temp_holder = calloc(temp_holder_cap, \
+			sizeof(*temp_holder));
 	if (temp_holder == nullptr)
 		return false;
 	errno = 0;
@@ -100,7 +102,8 @@ static struct test_suite* create_empty_suite(void)
 	errno = 0;
 	temp_suite->holder_cap = PACKET_SIZE;
 	temp_suite->holder_last_index = 0;
-	temp_suite->nodes_holder = calloc(temp_suite->holder_cap, sizeof(*temp_suite->nodes_holder));
+	temp_suite->nodes_holder = calloc(temp_suite->holder_cap, \
+			sizeof(*temp_suite->nodes_holder));
 	if (temp_suite->nodes_holder == nullptr)
 		return nullptr;
 	return temp_suite;
@@ -111,7 +114,8 @@ static void free_empty_suite(struct test_suite* suite)
 	free(suite);
 }
 
-static void push_node_in_suite(struct test_suite* suite, struct sohomot_func_node* node)
+static void push_node_in_suite(struct test_suite* suite, \
+		struct sohomot_func_node* node)
 {
 	suite->nodes_holder[suite->holder_last_index] = *node;
 	++suite->holder_last_index;
@@ -177,7 +181,8 @@ static bool feed_failed_tests(char* name)
 {
 	if (g_failed_tests == nullptr)
 	{
-		struct failed_node* temp_failed_node = calloc(1, sizeof(*temp_failed_node));
+		struct failed_node* temp_failed_node = calloc(1, \
+				sizeof(*temp_failed_node));
 		if (temp_failed_node == nullptr)
 			return false;
 		errno = 0;
@@ -188,7 +193,8 @@ static bool feed_failed_tests(char* name)
 	}
 	else
 	{
-		struct failed_node* temp_failed_node = calloc(1, sizeof(*temp_failed_node));
+		struct failed_node* temp_failed_node = calloc(1, \
+				sizeof(*temp_failed_node));
 		if (temp_failed_node == nullptr)
 			return false;
 		errno = 0;
@@ -220,8 +226,11 @@ bool run_and_print(void)
 		str_suites = "suite";
 	if (total_tests == 1)
 		str_tests = "test";
-	printf("%s%s%s Running %u %s from %u test %s.\n", COLOR_GREEN, g_bar_equal, COLOR_DEFAULT, total_tests, str_tests, total_suites, str_suites);
-	printf("%s%s%s Global test environment set-up.\n", COLOR_GREEN, g_bar_minus, COLOR_DEFAULT);
+	printf("%s%s%s Running %u %s from %u test %s.\n", COLOR_GREEN, \
+			g_bar_equal, COLOR_DEFAULT, total_tests, str_tests, \
+			total_suites, str_suites);
+	printf("%s%s%s Global test environment set-up.\n", COLOR_GREEN, \
+			g_bar_minus, COLOR_DEFAULT);
 
 	for (uint32_t i = 0; i < g_suites_last_index; ++i)
 	{
@@ -232,19 +241,28 @@ bool run_and_print(void)
 			str_tests = "test";
 		else
 			str_tests = "tests";
-		printf("%s%s%s %u %s from %s\n", COLOR_GREEN, g_bar_minus, COLOR_DEFAULT, per_suite_test, str_tests, current_suite->suite_name);
+		printf("%s%s%s %u %s from %s\n", COLOR_GREEN, g_bar_minus, \
+				COLOR_DEFAULT, per_suite_test, str_tests, \
+				current_suite->suite_name);
 		for (uint32_t j = 0; j < per_suite_test; ++j)
 		{
-			printf("%s%s%s %s.%s\n", COLOR_GREEN, g_bar_run, COLOR_DEFAULT, current_suite->suite_name, current_holder[j].test_name);
+			printf("%s%s%s %s.%s\n", COLOR_GREEN, g_bar_run, \
+					COLOR_DEFAULT, current_suite->suite_name, \
+					current_holder[j].test_name);
 			current_holder[j].func();
 			if (g_expect_passed == true)
-				printf("%s%s%s %s.%s\n", COLOR_GREEN, g_bar_ok, COLOR_DEFAULT, current_suite->suite_name, current_holder[j].test_name);
+				printf("%s%s%s %s.%s\n", COLOR_GREEN, g_bar_ok, \
+						COLOR_DEFAULT, current_suite->suite_name, \
+						current_holder[j].test_name);
 			if (g_expect_passed == false)
 			{
-				printf("%s%s%s %s.%s\n", COLOR_RED, g_bar_failed, COLOR_DEFAULT, current_suite->suite_name, current_holder[j].test_name);
+				printf("%s%s%s %s.%s\n", COLOR_RED, g_bar_failed, \
+						COLOR_DEFAULT, current_suite->suite_name, \
+						current_holder[j].test_name);
 				const char* suite = current_suite->suite_name;
 				const char* test = current_holder[j].test_name;
-				char* suite_test_concat = calloc(strlen(suite) + 1 + strlen(test), sizeof(*suite_test_concat) + 1);
+				char* suite_test_concat = calloc(strlen(suite) + 1 + strlen(test), \
+						sizeof(*suite_test_concat) + 1);
 				if (suite_test_concat == nullptr)
 					return false;
 				errno = 0;
@@ -268,27 +286,37 @@ bool run_and_print(void)
 				++n_failed;
 			}
 		}
-		printf("%s%s%s %u %s from %s\n\n", COLOR_GREEN, g_bar_minus, COLOR_DEFAULT, per_suite_test, str_tests, current_suite->suite_name);
+		printf("%s%s%s %u %s from %s\n\n", COLOR_GREEN, g_bar_minus, \
+				COLOR_DEFAULT, per_suite_test, str_tests, \
+				current_suite->suite_name);
 	}
-	printf("%s%s%s Global test environment tear-down\n", COLOR_GREEN, g_bar_minus, COLOR_DEFAULT);
-	printf("%s%s%s %u %s from %u test %s ran.\n", COLOR_GREEN, g_bar_equal, COLOR_DEFAULT, total_tests, str_tests, total_suites, str_suites);
+	printf("%s%s%s Global test environment tear-down\n", COLOR_GREEN, \
+			g_bar_minus, COLOR_DEFAULT);
+	printf("%s%s%s %u %s from %u test %s ran.\n", COLOR_GREEN, \
+			g_bar_equal, COLOR_DEFAULT, total_tests, str_tests, \
+			total_suites, str_suites);
 	uint32_t n_passed = total_tests - n_failed;
 	if (n_passed == 1)
-		printf("%s%s%s %u test.\n", COLOR_GREEN, g_bar_passed, COLOR_DEFAULT, total_tests - n_failed);
+		printf("%s%s%s %u test.\n", COLOR_GREEN, g_bar_passed, \
+				COLOR_DEFAULT, total_tests - n_failed);
 	else
-		printf("%s%s%s %u tests.\n", COLOR_GREEN, g_bar_passed, COLOR_DEFAULT, total_tests - n_failed);
+		printf("%s%s%s %u tests.\n", COLOR_GREEN, g_bar_passed, \
+				COLOR_DEFAULT, total_tests - n_failed);
 	if (n_failed != 0)
 	{
 		if (n_failed == 1)
-			printf("%s%s%s %u test, listed below:\n", COLOR_RED, g_bar_failed, COLOR_DEFAULT, n_failed);
+			printf("%s%s%s %u test, listed below:\n", COLOR_RED, \
+					g_bar_failed, COLOR_DEFAULT, n_failed);
 		else
-			printf("%s%s%s %u tests, listed below:\n", COLOR_RED, g_bar_failed, COLOR_DEFAULT, n_failed);
+			printf("%s%s%s %u tests, listed below:\n", COLOR_RED, \
+					g_bar_failed, COLOR_DEFAULT, n_failed);
 		struct failed_node* fn = g_failed_tests_head;
 		struct failed_node* deleting_node = nullptr;
 		while (fn != nullptr)
 		{
 			deleting_node = fn;
-			printf("%s%s%s %s\n", COLOR_RED, g_bar_failed, COLOR_DEFAULT, fn->test_name);
+			printf("%s%s%s %s\n", COLOR_RED, g_bar_failed, \
+					COLOR_DEFAULT, fn->test_name);
 			free(fn->test_name);
 			fn = fn->next;
 			free(deleting_node);
@@ -297,54 +325,74 @@ bool run_and_print(void)
 	return true;
 }
 
-void print_int8(const char* type, const char* name, const int8_t x, const char* side)
+void print_int8(const char* type, const char* name, \
+		const int8_t x, const char* side)
 {
-	printf("    %s (%s) %s -> '%c' (%d) (0x%x)\n", side, type, name, x, (int32_t)x, (int32_t)x); \
+	printf("    %s (%s) %s -> '%c' (%d) (0x%x)\n", \
+			side, type, name, x, (int32_t)x, (int32_t)x);
 }
 
-void print_uint8(const char* type, const char* name, const uint8_t x, const char* side)
+void print_uint8(const char* type, const char* name, \
+		const uint8_t x, const char* side)
 {
-	printf("    %s (%s) %s -> '%c' (%u) (0x%x)\n", side, type, name, x, (uint32_t)x, (uint32_t)x); \
+	printf("    %s (%s) %s -> '%c' (%u) (0x%x)\n", \
+			side, type, name, x, (uint32_t)x, (uint32_t)x);
 }
 
-void print_int16(const char* type, const char* name, const int16_t x, const char* side)
+void print_int16(const char* type, const char* name, \
+		const int16_t x, const char* side)
 {
-	printf("    %s (%s) %s -> %hd (0x%x)\n", side, type, name, x, (int32_t)x); \
+	printf("    %s (%s) %s -> %hd (0x%x)\n", \
+			side, type, name, x, (int32_t)x);
 }
 
-void print_uint16(const char* type, const char* name, const uint16_t x, const char* side)
+void print_uint16(const char* type, const char* name, \
+		const uint16_t x, const char* side)
 {
-	printf("    %s (%s) %s -> %hu (0x%x)\n", side, type, name, x, (uint32_t)x); \
+	printf("    %s (%s) %s -> %hu (0x%x)\n", \
+			side, type, name, x, (uint32_t)x);
 }
 
-void print_int32(const char* type, const char* name, const int32_t x, const char* side)
+void print_int32(const char* type, const char* name, \
+		const int32_t x, const char* side)
 {
-	printf("    %s (%s) %s -> %d (0x%x)\n", side, type, name, x, (int32_t)x); \
+	printf("    %s (%s) %s -> %d (0x%x)\n", \
+			side, type, name, x, (int32_t)x);
 }
 
-void print_uint32(const char* type, const char* name, const uint32_t x, const char* side)
+void print_uint32(const char* type, const char* name, \
+		const uint32_t x, const char* side)
 {
-	printf("    %s (%s) %s -> %u (0x%x)\n", side, type, name, x, (int32_t)x); \
+	printf("    %s (%s) %s -> %u (0x%x)\n", \
+			side, type, name, x, (int32_t)x);
 }
 
-void print_int64(const char* type, const char* name, const int64_t x, const char* side)
+void print_int64(const char* type, const char* name, \
+		const int64_t x, const char* side)
 {
-	printf("    %s (%s) %s -> %" PRId64 " (0x%" PRIx64 ")\n", side, type, name, x, x); \
+	printf("    %s (%s) %s -> %" PRId64 " (0x%" PRIx64 ")\n", \
+			side, type, name, x, x);
 }
 
-void print_uint64(const char* type, const char* name, const uint64_t x, const char* side)
+void print_uint64(const char* type, const char* name, \
+		const uint64_t x, const char* side)
 {
-	printf("    %s (%s) %s -> %" PRIu64 " (0x%" PRIx64 ")\n", side, type, name, x, x); \
+	printf("    %s (%s) %s -> %" PRIu64 " (0x%" PRIx64 ")\n", \
+			side, type, name, x, x);
 }
 
-void print_long_long(const char* type, const char* name, const long long x, const char* side)
+void print_long_long(const char* type, const char* name, \
+		const long long x, const char* side)
 {
-	printf("    %s (%s) %s -> %" PRId64 " (0x%" PRIx64 ")\n", side, type, name, (int64_t)x, (uint64_t)x); \
+	printf("    %s (%s) %s -> %" PRId64 " (0x%" PRIx64 ")\n", \
+			side, type, name, (int64_t)x, (uint64_t)x);
 }
 
-void print_unsigned_long_long(const char* type, const char* name, const unsigned long long x, const char* side)
+void print_unsigned_long_long(const char* type, const char* name, \
+		const unsigned long long x, const char* side)
 {
-	printf("    %s (%s) %s -> %" PRIu64 " (0x%" PRIx64 ")\n", side, type, name, (uint64_t)x, (uint64_t)x); \
+	printf("    %s (%s) %s -> %" PRIu64 " (0x%" PRIx64 ")\n", \
+			side, type, name, (uint64_t)x, (uint64_t)x);
 }
 
 void print_default(void)

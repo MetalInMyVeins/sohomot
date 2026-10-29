@@ -17,7 +17,8 @@ static struct sohomot_func_node* g_sfn_head = nullptr;
 static uint32_t g_node_len = 0;
 static struct sohomot_func_node* arr_func_nodes = nullptr;
 
-void register_sohomot_func(sohomot_func func, const char* suitename, const char* testname)
+void register_sohomot_func(sohomot_func func, \
+		const char* suitename, const char* testname)
 {
 	if (g_sfn == nullptr)
 	{
@@ -86,7 +87,8 @@ uint32_t get_total_nodes(void)
 	return g_node_len;
 }
 
-bool do_nodes_match(struct sohomot_func_node* n1, struct sohomot_func_node* n2)
+bool do_nodes_match(struct sohomot_func_node* n1, \
+		struct sohomot_func_node* n2)
 {
 	if (n1->func != n2->func)
 		return false;
