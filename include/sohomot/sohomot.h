@@ -18,6 +18,7 @@ void set_expect_passed(bool passed);
 bool expect_streq(const char* a, const char* b);
 
 static const char* str_equality = "Expected equality of these values:";
+static const char* str_expectation_not_met = "Expectation not met for these values:";
 static const char* str_lhs = "LHS:";
 static const char* str_rhs = "RHS:";
 
@@ -113,6 +114,23 @@ void print_default(void);
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_equality); \
+			PRINT(TYPESTR(A), #A, A, str_lhs); \
+			PRINT(TYPESTR(B), #B, B, str_rhs); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
+#define EXPECT_NE(A, B) \
+	do \
+	{ \
+		typeof(A) _a = (A); \
+		typeof(B) _b = (B); \
+		if (_a == _b) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("%s\n", str_expectation_not_met); \
+			printf("    Should be: LHS != RHS\n"); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
 			printf("\n"); \
