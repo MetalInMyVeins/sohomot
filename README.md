@@ -37,6 +37,7 @@ Clone the repo and build:
 ```bash
 git clone https://github.com/MetalInMyVeins/sohomot
 cd sohomot
+# You can execute `make info` to list all available targets.
 make rel
 ```
 
