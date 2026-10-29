@@ -1,8 +1,10 @@
 #include "suite.h"
 #include "sohomot/sohomot.h"
 #include <ctype.h>
+#include <float.h>
 #include <errno.h>
 #include <inttypes.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -218,6 +220,20 @@ bool expect_strcase_eq(const char* a, const char* b)
 	if (tolower(*a) != tolower(*b))
 		status = false;
 	return status;
+}
+
+bool expect_double_eq(const double a, const double b)
+{
+	if (fabs(a - b) < DBL_EPSILON)
+		return true;
+	return false;
+}
+
+bool expect_long_double_eq(const long double a, const long double b)
+{
+	if (fabsl(a - b) < LDBL_EPSILON)
+		return true;
+	return false;
 }
 
 static bool feed_failed_tests(char* name)
@@ -437,6 +453,20 @@ void print_unsigned_long_long(const char* type, const char* name, \
 {
 	printf("    %s (%s) %s -> %" PRIu64 " (0x%" PRIx64 ")\n", \
 			side, type, name, (uint64_t)x, (uint64_t)x);
+}
+
+void print_double(const char* type, const char* name, \
+		const double x, const char* side)
+{
+	printf("    %s (%s) %s -> %.18lf\n", \
+			side, type, name, x);
+}
+
+void print_long_double(const char* type, const char* name, \
+		const long double x, const char* side)
+{
+	printf("    %s (%s) %s -> %.18Lf\n", \
+			side, type, name, x);
 }
 
 void print_str(const char* type, const char* name, \

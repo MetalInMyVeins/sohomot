@@ -17,6 +17,8 @@ bool do_nodes_match(struct sohomot_func_node* n1, struct \
 void set_expect_passed(bool passed);
 bool expect_streq(const char* a, const char* b);
 bool expect_strcase_eq(const char* a, const char* b);
+bool expect_double_eq(const double a, const double b);
+bool expect_long_double_eq(const long double a, const long double b);
 
 static const char* str_equality = "Expected equality of these values:";
 static const char* str_expectation_not_met = "Expectation not met for these values:";
@@ -54,6 +56,10 @@ void print_long_long(const char* type, const char* name, \
 		const long long x, const char* side);
 void print_unsigned_long_long(const char* type, const char* name, \
 		const unsigned long long x, const char* side);
+void print_double(const char* type, const char* name, \
+		const double x, const char* side);
+void print_long_double(const char* type, const char* name, \
+		const long double x, const char* side);
 void print_str(const char* type, const char* name, \
 		const char* x, const char* side);
 void print_default(void);
@@ -70,6 +76,8 @@ void print_default(void);
 	uint64_t: "uint64_t", \
 	long long: "long long", \
 	unsigned long long: "unsigned long long", \
+	double: "double", \
+	long double: "long double", \
 	char*: "char*", \
 	const char*: "const char*", \
 	bool: "bool", \
@@ -88,6 +96,8 @@ void print_default(void);
 	uint64_t: print_uint64, \
 	long long: print_long_long, \
 	unsigned long long: print_unsigned_long_long, \
+	double: print_double, \
+	long double: print_long_double, \
 	char*: print_str, \
 	const char*: print_str, \
 	default: print_default \
@@ -187,6 +197,39 @@ void print_default(void);
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_expectation_not_met); \
 			printf("    Should be: LHS >= RHS\n"); \
+			PRINT(TYPESTR(A), #A, A, str_lhs); \
+			PRINT(TYPESTR(B), #B, B, str_rhs); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
+#define EXPECT_DOUBLE_EQ(A, B) \
+	do \
+	{ \
+		typeof(A) _a = (A); \
+		typeof(B) _b = (B); \
+		if (!expect_double_eq(_a, _b)) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("%s\n", str_equality); \
+			PRINT(TYPESTR(A), #A, A, str_lhs); \
+			PRINT(TYPESTR(B), #B, B, str_rhs); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
+// this macro is an extension.
+#define EXPECT_LONG_DOUBLE_EQ(A, B) \
+	do \
+	{ \
+		typeof(A) _a = (A); \
+		typeof(B) _b = (B); \
+		if (!expect_long_double_eq(_a, _b)) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("%s\n", str_equality); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
 			printf("\n"); \
