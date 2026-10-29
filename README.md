@@ -13,18 +13,21 @@
   </tr>
 </table>
 
-This is a very minimal gtest-like test framework written in C. With my past reliance on gtest, it was hard to get rid of it. At the same time, it was awkward to bring the C++ runtime in a C project just for testing. And also, I didn't wan't to loose the comfort gtest provided. So this would work exactly the way gtest works given that you only use:
+Drop-in minimal replacement of gtest written in C23 given that you only use:
 
 - `TEST(TestSuite, TestCase)`
 - `EXPECT_EQ(EXPR1, EXPR2)`
 - `EXPECT_STREQ(EXPR1, EXPR2)`
 
+I always heavily relied on gtest while working with C++. But as gtest is written in C++, using it in a plain C project means bringing the C++ runtime which seemed kind of awkward to me. At the same time, I didn't want to loose the comfort gtest provided. That's the sole purpose of this project.
+
 "Sohomot" is a bangla word which literally means "agreement" or "in agreement with". It's also used in mocking blind flatterers, sycophants, and yes-mans.
 
 # LLM Ban
 
-This is an educational project. LLMs are strictly banned from contributing.
-The images are AI-generated.
+This is an educational project. Except for the AI-generated images, this repo is entirely human-written.
+
+LLMs are strictly banned from contributing.
 
 # License
 
