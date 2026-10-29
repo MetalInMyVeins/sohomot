@@ -19,6 +19,7 @@ info:
 	@echo -e "    san: do a sanitizer build"
 	@echo -e "    rel: do a release build"
 	@echo -e "    clean: clean source tree"
+	@echo -e "    info: print this info message"
 
 CFLAGS_COMMON := \
 	-std=c23 \
