@@ -15,8 +15,12 @@ Drop-in minimal replacement of gtest written in C23 given that you only use:
 - `EXPECT_GE(EXPR1, EXPR2)`
 - `EXPECT_STREQ(EXPR1, EXPR2)`
 - `EXPECT_STRNE(EXPR1, EXPR2)`
+- `EXPECT_STRCASEEQ(EXPR1, EXPR2)`
+- `EXPECT_STRCASENE(EXPR1, EXPR2)`
+- `EXPECT_TRUE(EXPR)`
+- `EXPECT_FALSE(EXPR)`
 
-I always heavily relied on gtest while working with C++. But as gtest is written in C++, using it in a plain C project meant bringing the C++ runtime which seemed kind of awkward to me. At the same time, I didn't want to loose the comfort gtest provided. That's the sole purpose of this project.
+I always heavily relied on gtest while working with C++. But as gtest is written in C++, using it in a plain C project meant bringing the C++ runtime along with some compiler trickery which seemed kind of awkward to me. At the same time, I didn't want to loose the comfort gtest provided. That's the sole purpose of this project. Not having to deal with C++ while utilizing almost the same facility gtest provided.
 
 "Sohomot" is a bangla word which literally means "agreement" or "in agreement with" in a joking tone.
 
