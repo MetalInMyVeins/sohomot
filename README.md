@@ -23,7 +23,7 @@ Drop-in minimal replacement of gtest written in C23 given that you only use:
 - `EXPECT_TRUE(EXPR)`
 - `EXPECT_FALSE(EXPR)`
 
-I always heavily relied on gtest while working with C++. But as gtest is written in C++, using it in a plain C project meant bringing the C++ runtime along with some compiler trickery which seemed kind of awkward to me. At the same time, I didn't want to loose the comfort gtest provided. That's the sole purpose of this project. Not having to deal with C++ while utilizing almost the same facility gtest provided.
+I always heavily relied on gtest while working with C++. But for being written in C++, using gtest in a plain C project meant bringing the C++ runtime which seemed quite awkward to me. At the same time, I didn't want to loose the comfort gtest provided. That's the sole purpose of this project. Not having to deal with C++ while having access to almost the same facility gtest provided.
 
 "Sohomot" is a bangla word which literally means "agreement" or "in agreement with" in a joking tone.
 
@@ -31,7 +31,7 @@ I always heavily relied on gtest while working with C++. But as gtest is written
 
 - A C23 compliant compiler
 - Any linker
-- Linux (windows support is being planned)
+- Linux (windows support is in mind)
 
 # Usage
 
