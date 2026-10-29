@@ -388,6 +388,11 @@ bool run_and_print(void)
 			fn = fn->next;
 			free(deleting_node);
 		}
+		printf("\n");
+		if (n_failed == 1)
+			printf("%u FAILED TEST\n", n_failed);
+		else
+			printf("%u FAILED TESTS\n", n_failed);
 	}
 	return true;
 }
