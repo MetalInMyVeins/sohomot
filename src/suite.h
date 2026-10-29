@@ -24,6 +24,6 @@ bool suites_init(void);
 void suites_free(void);
 bool setup_suites(struct sohomot_func_node* nodes, uint32_t nodes_len);
 void clean_suites();
-void print_suites_status(void);
+bool run_and_print(void);
 
 #endif // SUITE_H

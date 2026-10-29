@@ -25,7 +25,12 @@ int main(void)
 		fprintf(stderr, "sohomot: %s\n", strerror(errno));
 		return EXIT_FAILURE;
 	}
-	print_suites_status();
+	bool print_status = run_and_print();
+	if (print_status == false)
+	{
+		fprintf(stderr, "sohomot: %s\n", strerror(errno));
+		return EXIT_FAILURE;
+	}
 	clean_suites();
 	suites_free();
 	free_arr_func_nodes();
