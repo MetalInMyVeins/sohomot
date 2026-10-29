@@ -1,17 +1,8 @@
-# sohomot
+<h1 align="center">sohomot</h1>
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="./res/sohomot_bangla.png" width="400" />
-      <br />
-    </td>
-    <td align="center">
-      <img src="./res/sohomot_english.png" width="400" />
-      <br />
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="./res/sohomot_bangla.png" />
+</p>
 
 Drop-in minimal replacement of gtest written in C23 given that you only use:
 
