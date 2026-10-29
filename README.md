@@ -19,9 +19,111 @@ I always heavily relied on gtest while working with C++. But as gtest is written
 
 "Sohomot" is a bangla word which literally means "agreement" or "in agreement with" in a joking tone.
 
+# Dependency:
+
+- A C23 compliant compiler
+- Any linker
+- Linux (windows support is being planned)
+
+# Usage
+
+Clone the repo and build:
+
+```bash
+git clone https://github.com/MetalInMyVeins/sohomot
+cd sohomot
+make rel
+```
+
+This would build the library in `build/rel/lib/`. The target would be `libsohomot_main.so` which would be symlinked to `libsohomot_main.so.0.1.0`.
+
+The main header file is located at `include/sohomot/sohomot.h`.
+
+To use the library, write a C program with no `main()`:
+
+test.c:
+```c
+#include "sohomot/sohomot.h"
+
+TEST(Integral, Add)
+{
+	int x = 111;
+	int y = 222;
+	EXPECT_NE(x, y);
+	x += 111;
+	EXPECT_LT(x, y);
+	y += 333;
+	EXPECT_NE(x, y);
+}
+
+TEST(Integral, Sub)
+{
+	uint64_t abcd = 12345;
+	uint64_t efgh = 54321;
+	abcd += 41976;
+	EXPECT_EQ(abcd, efgh);
+}
+
+TEST(String, Equality)
+{
+	const char* s1 = "asdf";
+	const char* s2 = "qwer";
+	EXPECT_STREQ(s1, s2);
+	s2 = "asdf";
+	EXPECT_STREQ(s1, s2);
+	s1 = "asdg";
+	EXPECT_STREQ(s1, s2);
+}
+```
+
+Compile and run:
+```bash
+clang -std=c23 test.c -o test -Iinclude -Lbuild/rel/lib -lsohomot_main -Wl,-rpath=build/rel/lib
+./test
+```
+
+Output:
+```[==========] Running 3 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 2 tests from Integral
+[ RUN      ] Integral.Add
+scratch/t1.c:9: Failure
+Expectation not met for these values:
+    Should be: LHS < RHS
+    LHS: (int32_t) x -> 222 (0xde)
+    RHS: (int32_t) y -> 222 (0xde)
+
+[  FAILED  ] Integral.Add
+[ RUN      ] Integral.Sub
+[       OK ] Integral.Sub
+[----------] 2 tests from Integral
+
+[----------] 1 test from String
+[ RUN      ] String.Equality
+scratch/t1.c:26: Failure
+Expected equality of these values:
+    LHS: (const char*) s1 -> "asdf"
+    RHS: (const char*) s2 -> "qwer"
+
+scratch/t1.c:30: Failure
+Expected equality of these values:
+    LHS: (const char*) s1 -> "asdg"
+    RHS: (const char*) s2 -> "asdf"
+
+[  FAILED  ] String.Equality
+[----------] 1 test from String
+
+[----------] Global test environment tear-down
+[==========] 3 test from 2 test suites ran.
+[  PASSED  ] 1 test.
+[  FAILED  ] 2 tests, listed below:
+[  FAILED  ] Integral.Add
+[  FAILED  ] String.Equality
+```
+
 # LLM Ban
 
-This is an educational project. Except for the AI-generated images, this repo is entirely human-written.
+Except for the AI-generated image, this repo is entirely human-written.
 
 LLMs are strictly banned from contributing.
 
