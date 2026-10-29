@@ -105,22 +105,6 @@ void print_default(void);
 		} \
 	} while (false)
 
-#define EXPECT_STREQ(A, B) \
-	do \
-	{ \
-		const char* _a = (A); \
-		const char* _b = (B); \
-		if (!expect_streq(_a, _b)) \
-		{ \
-			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
-			printf("%s\n", str_equality); \
-			PRINT(TYPESTR(A), #A, A, str_lhs); \
-			PRINT(TYPESTR(B), #B, B, str_rhs); \
-			printf("\n"); \
-			set_expect_passed(false); \
-		} \
-	} while (false)
-
 #define EXPECT_NE(A, B) \
 	do \
 	{ \
@@ -199,6 +183,39 @@ void print_default(void);
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_expectation_not_met); \
 			printf("    Should be: LHS >= RHS\n"); \
+			PRINT(TYPESTR(A), #A, A, str_lhs); \
+			PRINT(TYPESTR(B), #B, B, str_rhs); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
+#define EXPECT_STREQ(A, B) \
+	do \
+	{ \
+		const char* _a = (A); \
+		const char* _b = (B); \
+		if (!expect_streq(_a, _b)) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("%s\n", str_equality); \
+			PRINT(TYPESTR(A), #A, A, str_lhs); \
+			PRINT(TYPESTR(B), #B, B, str_rhs); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
+#define EXPECT_STRNE(A, B) \
+	do \
+	{ \
+		const char* _a = (A); \
+		const char* _b = (B); \
+		if (expect_streq(_a, _b)) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("%s\n", str_expectation_not_met); \
+			printf("    Should be: LHS != RHS\n"); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
 			printf("\n"); \
