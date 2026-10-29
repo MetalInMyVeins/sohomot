@@ -15,9 +15,9 @@ uint32_t get_total_nodes(void);
 bool do_nodes_match(struct sohomot_func_node* n1, struct \
 		sohomot_func_node* n2);
 void set_expect_passed(bool passed);
+bool expect_streq(const char* a, const char* b);
 
-static const char* str_equality = "Expected equality of these \
-								   values:";
+static const char* str_equality = "Expected equality of these values:";
 static const char* str_lhs = "LHS:";
 static const char* str_rhs = "RHS:";
 
@@ -50,6 +50,8 @@ void print_long_long(const char* type, const char* name, \
 		const long long x, const char* side);
 void print_unsigned_long_long(const char* type, const char* name, \
 		const unsigned long long x, const char* side);
+void print_str(const char* type, const char* name, \
+		const char* x, const char* side);
 void print_default(void);
 
 #define TYPESTR(X) _Generic((X), \
@@ -64,6 +66,8 @@ void print_default(void);
 	uint64_t: "uint64_t", \
 	long long: "long long", \
 	unsigned long long: "unsigned long long", \
+	char*: "char*", \
+	const char*: "const char*", \
 	default: "unknown" \
 )
 
@@ -79,6 +83,8 @@ void print_default(void);
 	uint64_t: print_uint64, \
 	long long: print_long_long, \
 	unsigned long long: print_unsigned_long_long, \
+	char*: print_str, \
+	const char*: print_str, \
 	default: print_default \
 )(T, Y, X, Z)
 
@@ -88,6 +94,22 @@ void print_default(void);
 		typeof(A) _a = (A); \
 		typeof(B) _b = (B); \
 		if (!(_a == _b)) \
+		{ \
+			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+			printf("%s\n", str_equality); \
+			PRINT(TYPESTR(A), #A, A, str_lhs); \
+			PRINT(TYPESTR(B), #B, B, str_rhs); \
+			printf("\n"); \
+			set_expect_passed(false); \
+		} \
+	} while (false)
+
+#define EXPECT_STREQ(A, B) \
+	do \
+	{ \
+		const char* _a = (A); \
+		const char* _b = (B); \
+		if (!expect_streq(_a, _b)) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_equality); \

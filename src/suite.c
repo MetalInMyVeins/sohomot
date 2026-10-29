@@ -177,6 +177,24 @@ void set_expect_passed(bool passed)
 	g_expect_passed = passed;
 }
 
+bool expect_streq(const char* a, const char* b)
+{
+	if (a == nullptr || b == nullptr)
+		return false;
+	if (a == b)
+		return true;
+
+	bool status = true;
+	while (*a != '\0' && *a == *b)
+	{
+		++a;
+		++b;
+	}
+	if (*a != *b)
+		status = false;
+	return status;
+}
+
 static bool feed_failed_tests(char* name)
 {
 	if (g_failed_tests == nullptr)
@@ -393,6 +411,13 @@ void print_unsigned_long_long(const char* type, const char* name, \
 {
 	printf("    %s (%s) %s -> %" PRIu64 " (0x%" PRIx64 ")\n", \
 			side, type, name, (uint64_t)x, (uint64_t)x);
+}
+
+void print_str(const char* type, const char* name, \
+		const char* x, const char* side)
+{
+	printf("    %s (%s) %s -> \"%s\"\n", \
+			side, type, name, x);
 }
 
 void print_default(void)
