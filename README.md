@@ -83,7 +83,8 @@ clang -std=c23 test.c -o test -Iinclude -Lbuild/rel/lib -lsohomot_main -Wl,-rpat
 ```
 
 Output:
-```[==========] Running 3 tests from 2 test suites.
+```
+[==========] Running 3 tests from 2 test suites.
 [----------] Global test environment set-up.
 [----------] 2 tests from Integral
 [ RUN      ] Integral.Add
