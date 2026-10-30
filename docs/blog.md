@@ -189,3 +189,45 @@ void sohomot_Integer_Add(void)
 ```
 
 Cool right? Yeah.
+
+### The Not-So-Hard Part
+
+Now that you got your hands on linked list containing structs containing all the test functions, the next part is easy, although not small by any means. You'd be able to notice that a test case is part of a test suite. You'd run `x` number of test cases from `y` number of test suites and report a pretty output. For that, you'd need to differentiate each test case by their parent test suite.
+
+For that, my idea was really simple. Build a struct `test_suite` which would have its own name and would hold a dynamic array of its children test cases, aka, `sohomot_func_node`s which have the same parent suite name as the `test_suite`'s name. And finally build a dynamic AoS of `test_suites`s. Later when you'd walk the linked list of test cases, you'd dynamically populate the array of `test_suite`s and store `sohomot_func_node` children in them as required (currently there's a minor bottleneck in the procedure which I'd solve later).
+
+This is the so called `test_suite`:
+```c
+struct test_suite
+{
+	const char* suite_name;
+	struct sohomot_func_node* nodes_holder;
+	uint32_t holder_cap;
+	uint32_t holder_last_index;
+};
+```
+
+And later, you'd loop on the AoS of `test_suite` and call each function held by each `test suite`. The `EXPECT_*` macros would change the state of the test case and test suite during runtime as required and finally success or error status would be reported which is, in my opinion, prettier and more comprehensive than gtest.
+
+The currently supported macros are:
+
+- `TEST(TestSuite, TestCase)`
+- `EXPECT_EQ(EXPR1, EXPR2)`
+- `EXPECT_NE(EXPR1, EXPR2)`
+- `EXPECT_LT(EXPR1, EXPR2)`
+- `EXPECT_LE(EXPR1, EXPR2)`
+- `EXPECT_GT(EXPR1, EXPR2)`
+- `EXPECT_GE(EXPR1, EXPR2)`
+- `EXPECT_DOUBLE_EQ(EXPR1, EXPR2)`
+- `EXPECT_LONG_DOUBLE_EQ(EXPR1, EXPR2)`   (extension)
+- `EXPECT_FLOAT_EQ(EXPR1, EXPR2)`
+- `EXPECT_STREQ(EXPR1, EXPR2)`
+- `EXPECT_STRNE(EXPR1, EXPR2)`
+- `EXPECT_STRCASEEQ(EXPR1, EXPR2)`
+- `EXPECT_STRCASENE(EXPR1, EXPR2)`
+- `EXPECT_TRUE(EXPR)`
+- `EXPECT_FALSE(EXPR)`
+
+## Conclusion
+
+There are still lots of work and optimization to. I'd add everything incrementally as I need them. It was a fun project to work on.
