@@ -50,7 +50,7 @@ The main header file would be located at `include/sohomot/sohomot.h`.
 
 To use the library, write a C program with no `main()`:
 
-test.c:
+`test.c`:
 ```c
 #include "sohomot/sohomot.h"
 #include <stdint.h>
