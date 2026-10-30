@@ -17,4 +17,4 @@ The purpose of this post is to explain the implementation details and design dec
 <p align="center">
   <img src="./assets/sohomot_bangla.png" />
 </p>
-<h5 align="center"><i>sohomot is a bangla word and this literally reads as someone is telling you, "i agree bro, BLEGH"</i></h5>
+<h5 align="center"><i>sohomot is a bangla word; the image literally reads as someone is telling you, "i agree bro, BLEGH"</i></h5>
