@@ -34,7 +34,8 @@ CFLAGS_COMMON := \
 	-Wformat=2 \
 	-Wundef -Wvla \
 	-Wpointer-arith -Wwrite-strings -Wswitch-enum \
-	-Winit-self
+	-Winit-self \
+	-D_POSIX_C_SOURCE=200809L
 
 CFLAGS_OPT0 := -O0
 CFLAGS_OPT1 := -O1
