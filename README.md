@@ -27,7 +27,7 @@ I always heavily relied on gtest while working with C++. But for being written i
 
 "Sohomot" is a bangla word which literally means "agreement" or "in agreement with" in a joking tone.
 
-A blog post discussing the implementation detail can be found here https://metalinmyveins.github.io/sohomot
+A blog post discussing the implementation details can be found here https://metalinmyveins.github.io/sohomot
 
 # Dependency:
 
