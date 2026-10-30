@@ -12,9 +12,83 @@ Why write another test framework when there's gtest, right? gtest provides so ma
 
 That's when I realized I need a C equivalent of gtest. As in, the said library should be capable of being used exactly the same way gtest is used and should report errors the same way (if not better) gtest does. That's where `sohomot` comes. `sohomot` is written from scratch, by hand, in C23, mimicking gtest. Other than C23, `sohomot` also makes use of a compiler extension and a POSIX function. So currently it works only in x86_64 linux.
 
-The purpose of this post is to explain the implementation details and design decisions of `sohomot`.
+The purpose of this post is to explain the implementation details and design decisions of `sohomot`. I'd arrange it mimicking the exact sequence the development took place.
 
 <p align="center">
   <img src="./assets/sohomot_bangla.png" />
 </p>
 <h5 align="center"><i>sohomot is a bangla word; the image literally reads as someone is telling you, "i agree bro, BLEGH"</i></h5>
+
+## Problem Scoping
+
+Let's first see how gtest works. Say, you write a function `add` that adds two integers and returns the addition. You decide to split the header and implementation in two files `add.hxx` and `add.cxx`.
+
+`add.hxx`:
+```hxx
+int add(int, int);
+```
+
+`add.cxx`:
+```cxx
+int add(int x, int y)
+{
+    return x + y;
+}
+```
+
+And then to use the function, you write a program.
+
+`main.cxx`:
+```cxx
+#include "add.hxx"
+
+int main()
+{
+    int z = add(3, 5);
+    return z;
+}
+```
+
+You compile it like this:
+```bash
+clang++ -std=c++20 main.cxx add.cxx -o main
+```
+
+If you had split that compilation step, you'd see that the compiler first translated the source files to object files, and then invoked a linker on those files which finally created the binary `main`. Given that you execute `main` in linux, the kernel first loads the executable, the dynamic linker loads the shared libraries and performs relocations, and then control passes to `_start` which was provided to the program by `crt1.o` during linking step. `_start` calls `__libc_start_main()` provided by glibc and `__libc_start_main()` eventually calls `main()` of your program and that's when your actual instructions start executing. Too simple, right? If you defined multiple `main()` in a single translation unit, it would violate ODR and wouldn't compile. If you tried to link multiple `main()` from different translation units, you'd get a multiple definition error. So, if you're not performing any compiler trickery, there can be exactly one `main()`. That's it.
+
+Now, back to your `add` function. You want to test it using gtest. You write a program.
+
+`test.cxx`:
+```cxx
+#include "add.hxx"
+#include <gtest/gtest.h>
+
+TEST(Integers, Add)
+{
+    EXPECT_EQ(add(3, 5), 8);
+    EXPECT_EQ(add(2, 9), 11);
+    EXPECT_EQ(add(3, -5), -2);
+    EXPECT_EQ(add(13, 15), 28);
+    EXPECT_NE(add(33, 55), 8);
+}
+```
+
+That's it, that's the test. Notice there's no `main()` in the file because we'd compile it like this:
+
+```bash
+clang++ -std=c++20 test.cxx add.cxx -lgtest -lgtest_main -o test
+```
+
+`gtest_main` provides the `main()` to `test` which contains code to initialize and run the tests. Running `test` gets this output:
+```
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Integers
+[ RUN      ] Integers.Add
+[       OK ] Integers.Add (0 ms)
+[----------] 1 test from Integers (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+```
