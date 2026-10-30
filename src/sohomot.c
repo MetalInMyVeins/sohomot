@@ -29,6 +29,7 @@ void register_sohomot_func(sohomot_func func, \
 			fprintf(stderr, "sohomot: failed to register test\n");
 			return;
 		}
+
 		g_sfn->func = func;
 		g_sfn->suite_name = suitename;
 		g_sfn->test_name = testname;
@@ -44,6 +45,7 @@ void register_sohomot_func(sohomot_func func, \
 			fprintf(stderr, "sohomot: failed to register test\n");
 			return;
 		}
+
 		g_sfn = g_sfn->next;
 		g_sfn->func = func;
 		g_sfn->suite_name = suitename;
@@ -60,6 +62,7 @@ bool init_arr_func_nodes(void)
 	if (arr_func_nodes == nullptr)
 		return false;
 	errno = 0;
+
 	uint32_t i = 0;
 	while (g_sfn != nullptr)
 	{
@@ -67,6 +70,7 @@ bool init_arr_func_nodes(void)
 		g_sfn = g_sfn->next;
 		++i;
 	}
+
 	struct sohomot_func_node* temp = nullptr;
 	g_sfn = g_sfn_head;
 	while (g_sfn != nullptr)

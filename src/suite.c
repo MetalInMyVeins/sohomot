@@ -65,10 +65,12 @@ static bool suites_realloc(void)
 	if (temp_suites == nullptr)
 		return false;
 	errno = 0;
+
 	for (uint32_t i = 0; i < g_suites_last_index; ++i)
 	{
 		temp_suites[i] = *(g_suites + i);
 	}
+
 	free(g_suites);
 	g_suites = temp_suites;
 	g_suites_cap = temp_suites_cap;
@@ -83,10 +85,12 @@ static bool suites_holder_realloc(struct test_suite* suite)
 	if (temp_holder == nullptr)
 		return false;
 	errno = 0;
+
 	for (uint32_t i = 0; i < suite->holder_last_index; ++i)
 	{
 		temp_holder[i] = suite->nodes_holder[i];
 	}
+
 	free(suite->nodes_holder);
 	suite->nodes_holder = temp_holder;
 	suite->holder_cap = temp_holder_cap;
@@ -109,10 +113,12 @@ static struct test_suite* create_empty_suite(void)
 	if (temp_suite == nullptr)
 		return nullptr;
 	errno = 0;
+
 	temp_suite->holder_cap = PACKET_SIZE;
 	temp_suite->holder_last_index = 0;
 	temp_suite->nodes_holder = calloc(temp_suite->holder_cap, \
 			sizeof(*temp_suite->nodes_holder));
+
 	if (temp_suite->nodes_holder == nullptr)
 		return nullptr;
 	return temp_suite;
@@ -142,6 +148,7 @@ bool setup_suites(struct sohomot_func_node* nodes, uint32_t nodes_len)
 	{
 		struct sohomot_func_node* current_node = nodes + i;
 		struct test_suite* found_suite = search_belonging_suite(current_node);
+
 		if (found_suite)
 		{
 			if (found_suite->holder_last_index == found_suite->holder_cap)
@@ -252,6 +259,7 @@ static bool feed_failed_tests(char* name)
 		if (temp_failed_node == nullptr)
 			return false;
 		errno = 0;
+
 		temp_failed_node->test_name = name;
 		temp_failed_node->next = nullptr;
 		g_failed_tests = temp_failed_node;
@@ -264,6 +272,7 @@ static bool feed_failed_tests(char* name)
 		if (temp_failed_node == nullptr)
 			return false;
 		errno = 0;
+
 		temp_failed_node->test_name = name;
 		temp_failed_node->next = nullptr;
 		g_failed_tests->next = temp_failed_node;
@@ -281,17 +290,20 @@ bool run_and_print(void)
 		errno = 0;
 		return false;
 	}
+
 	uint32_t total_tests = 0;
 	for (uint32_t i = 0; i < g_suites_last_index; ++i)
 	{
 		total_tests += (g_suites + i)->holder_last_index;
 	}
+
 	const char* str_suites = "suites";
 	const char* str_tests = "tests";
 	if (total_suites == 1)
 		str_suites = "suite";
 	if (total_tests == 1)
 		str_tests = "test";
+
 	printf("%s%s%s Running %u %s from %u test %s.\n", COLOR_GREEN, \
 			g_bar_equal, COLOR_DEFAULT, total_tests, str_tests, \
 			total_suites, str_suites);
@@ -304,21 +316,26 @@ bool run_and_print(void)
 		struct test_suite* current_suite = (g_suites + i);
 		struct sohomot_func_node* current_holder = current_suite->nodes_holder;
 		uint32_t per_suite_test = current_suite->holder_last_index;
+
 		if (per_suite_test == 1)
 			str_tests = "test";
 		else
 			str_tests = "tests";
+
 		printf("%s%s%s %u %s from %s\n", COLOR_GREEN, g_bar_minus, \
 				COLOR_DEFAULT, per_suite_test, str_tests, \
 				current_suite->suite_name);
+
 		double per_suite_time = 0;
 		for (uint32_t j = 0; j < per_suite_test; ++j)
 		{
 			printf("%s%s%s %s.%s\n", COLOR_GREEN, g_bar_run, \
 					COLOR_DEFAULT, current_suite->suite_name, \
 					current_holder[j].test_name);
+
 			uint64_t now_ns = get_ns();
 			current_holder[j].func();
+
 			if (g_expect_passed == true)
 			{
 				double temp_us = (double)(get_ns() - now_ns) / 1000;
@@ -328,7 +345,7 @@ bool run_and_print(void)
 					    temp_us);
 				per_suite_time += temp_us;
 			}
-			if (g_expect_passed == false)
+			else if (g_expect_passed == false)
 			{
 				double temp_us = (double)(get_ns() - now_ns) / 1000;
 				printf("%s%s%s %s.%s   (%.2lf us)\n", COLOR_RED, g_bar_failed, \
@@ -336,6 +353,7 @@ bool run_and_print(void)
 						current_holder[j].test_name, \
 					    temp_us);
 				per_suite_time += temp_us;
+
 				const char* suite = current_suite->suite_name;
 				const char* test = current_holder[j].test_name;
 				char* suite_test_concat = calloc(strlen(suite) + 1 + strlen(test), \
@@ -343,6 +361,7 @@ bool run_and_print(void)
 				if (suite_test_concat == nullptr)
 					return false;
 				errno = 0;
+
 				size_t idx = 0;
 				for (; idx < strlen(suite); ++idx)
 				{
@@ -369,11 +388,13 @@ bool run_and_print(void)
 		global_total_time += per_suite_time;
 		per_suite_time = 0;
 	}
+
 	printf("%s%s%s Global test environment tear-down\n", COLOR_GREEN, \
 			g_bar_minus, COLOR_DEFAULT);
 	printf("%s%s%s %u %s from %u test %s ran.   (%.2lf us total)\n", COLOR_GREEN, \
 			g_bar_equal, COLOR_DEFAULT, total_tests, str_tests, \
 			total_suites, str_suites, global_total_time);
+
 	uint32_t n_passed = total_tests - n_failed;
 	if (n_passed == 1)
 		printf("%s%s%s %u test.\n", COLOR_GREEN, g_bar_passed, \
@@ -381,6 +402,7 @@ bool run_and_print(void)
 	else
 		printf("%s%s%s %u tests.\n", COLOR_GREEN, g_bar_passed, \
 				COLOR_DEFAULT, total_tests - n_failed);
+
 	if (n_failed != 0)
 	{
 		g_has_failed_test = true;
@@ -390,6 +412,7 @@ bool run_and_print(void)
 		else
 			printf("%s%s%s %u tests, listed below:\n", COLOR_RED, \
 					g_bar_failed, COLOR_DEFAULT, n_failed);
+
 		struct failed_node* fn = g_failed_tests_head;
 		struct failed_node* deleting_node = nullptr;
 		while (fn != nullptr)
@@ -402,6 +425,7 @@ bool run_and_print(void)
 			free(deleting_node);
 		}
 		printf("\n");
+
 		if (n_failed == 1)
 			printf("%u FAILED TEST\n", n_failed);
 		else
