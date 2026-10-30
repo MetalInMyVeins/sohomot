@@ -31,7 +31,7 @@ I always heavily relied on gtest while working with C++. But for being written i
 
 - A C23 compliant compiler
 - Any linker
-- Linux (windows support is in mind)
+- Linux (it uses exactly one compiler extension and one POSIX function, so it shouldn't be portable out of the box)
 
 # Usage
 
@@ -40,7 +40,7 @@ Clone the repo and build:
 ```bash
 git clone https://github.com/MetalInMyVeins/sohomot
 cd sohomot
-# You can execute `make info` to list all available targets.
+# You can execute `make info` or only `make` to list all available targets.
 make rel
 ```
 
@@ -138,7 +138,7 @@ Expected equality of these values:
 
 2 FAILED TESTS
 ```
-Execution time of each test is measured in nanosecond and then cast to microsecond and reported.
+Execution time of each test is measured in nanoseconds, cast to microseconds, and then reported.
 
 # LLM Ban
 
