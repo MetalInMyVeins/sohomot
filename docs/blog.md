@@ -314,6 +314,10 @@ Expected equality of these values:
 2 FAILED TESTS
 ```
 
+## Debug
+
+You already saw the form a test case takes. So as you can imagine, debugging a test case should be extremely easy. If you want to debug a test case `TEST(Foo, Bar)` in gdb, set breakpoint at `sohomot_Foo_Bar` and `run`.
+
 ## Conclusion
 
 There are still lots of work and optimization to do. The next thing I'd add are the `ASSERT_*` macros. Anyways, was a fun project.
