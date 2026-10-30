@@ -25,13 +25,13 @@ Let's first see how gtest works. Say, you write a function `add` that adds two i
 
 `add.hxx`:
 
-```hxx
+```cpp
 int add(int, int);
 ```
 
 `add.cxx`:
 
-```cxx
+```cpp
 int add(int x, int y)
 {
     return x + y;
@@ -42,7 +42,7 @@ And then to use the function, you write a program.
 
 `main.cxx`:
 
-```cxx
+```cpp
 #include "add.hxx"
 
 int main()
@@ -63,7 +63,7 @@ Now, back to your `add` function. You want to test it using gtest. You write a p
 
 `test.cxx`:
 
-```cxx
+```cpp
 #include "add.hxx"
 #include <gtest/gtest.h>
 
@@ -102,4 +102,8 @@ You can try providing an empty `main()` to your test file and that would overrid
 
 ## Facing the Problem
 
-Now let's face the problem. You don't really know how gtest is actually getting hands on that `TEST` macro and its parameters. I mean, whatever `main()` you write, the point when `main()` starts, you'd either have to be able to parse the `TEST`s somehow, or already have access to the parsed `TEST`s or whatever they are. You look up how gtest does it. Find out it's called static initialization. Good. Then look up how to do static initialization in C and you're cooked. Because in C, variables with static storage duration MUST be initialized with a compile-time constant expression. There's nothing called "runtime dynamic initialization" in standard C. And not only that, even if it was possible, you'd still have to think of a way to denote those `TEST`s in a way so they can be stored.
+Now let's face the problem. You don't really know how gtest is actually getting hands on that `TEST` macro and its parameters. I mean, whatever `main()` you write, the point when `main()` starts, you'd either have to be able to parse the `TEST`s somehow, or already have access to the parsed `TEST`s or whatever they are. You look up how gtest does it. Find out it's static initialization. Good. Then look up how to do it in C and you're cooked. Because in C, variables with static storage duration MUST be initialized with a compile-time constant expression. There's nothing called "runtime dynamic initialization" in standard C. And not only that, even if it was possible, you'd still have to think of a way to define those `TEST`s in a way so they can be stored.
+
+## TA-DA!
+
+Digging past the boundaries of standard C, you suddenly find a solution.
