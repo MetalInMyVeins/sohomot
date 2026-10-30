@@ -1,0 +1,7 @@
+title: sohomot
+description: Minimal drop-in replacement of gtest written in C23
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
