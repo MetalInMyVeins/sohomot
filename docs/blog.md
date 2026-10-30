@@ -13,5 +13,5 @@ That's when I realized I need a C equivalent of gtest. As in, the said library s
 The purpose of this blog post is to explain the implementation details and design decisions that were followed in `sohomot`.
 
 <p align="center">
-  <img src="../res/sohomot_bangla.png" />
+  <img src="./assets/sohomot_bangla.png" />
 </p>
