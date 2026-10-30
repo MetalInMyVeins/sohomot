@@ -38,7 +38,7 @@ The purpose of this post is to explain the implementation details and design dec
 <p align="center">
   <img src="./assets/sohomot_bangla.png" />
 </p>
-<h5 align="center"><i>sohomot is a bangla word; the image literally reads as someone is telling you, "i agree bro, BLEGH"</i></h5>
+<h5 align="center"><i>sohomot is a bangla word; the image literally reads as if someone is telling you, "i agree bro, BLEGH"</i></h5>
 
 ## Problem Scoping
 
@@ -230,6 +230,90 @@ struct test_suite
 
 And later, you'd loop on the AoS of `test_suite` and call each function held by each `test_suite`. The `EXPECT_*` macros would change the state of the test case and test suite during runtime as required and finally success or error status would be reported which is, in my opinion, prettier and more comprehensive than gtest.
 
+The time interval between the start and finish of a test case is measured in nanosecond accuracy for which a POSIX function `clock_gettime()` is used. The result is cast down do microseconds and then reported.
+
+## Demo
+
+If you followed the project's ![README.md](https://github.com/MetalInMyVeins/sohomot/blob/main/README.md) and properly built the library, the following test file would result in the output given after that.
+
+`test.c`:
+```c
+#include "sohomot/sohomot.h"
+#include <stdint.h>
+
+TEST(Integral, Add)
+{
+	int x = 111;
+	int y = 222;
+	EXPECT_NE(x, y);
+	x += 111;
+	EXPECT_LT(x, y);
+	y += 333;
+	EXPECT_NE(x, y);
+}
+
+TEST(Integral, Sub)
+{
+	uint64_t abcd = 12345;
+	uint64_t efgh = 54321;
+	abcd += 41976;
+	EXPECT_EQ(abcd, efgh);
+}
+
+TEST(String, Equality)
+{
+	const char* s1 = "asdf";
+	const char* s2 = "qwer";
+	EXPECT_STREQ(s1, s2);
+	s2 = "asdf";
+	EXPECT_STREQ(s1, s2);
+	s1 = "asdg";
+	EXPECT_STREQ(s1, s2);
+}
+```
+
+Output:
+```
+[==========] Running 3 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 2 tests from Integral
+[ RUN      ] Integral.Add
+scratch/t3.c:10: Failure
+Expectation not met for these values:
+    Should be: LHS < RHS
+    LHS: (int32_t) x -> 222 (0xde)
+    RHS: (int32_t) y -> 222 (0xde)
+
+[  FAILED  ] Integral.Add   (35.38 us)
+[ RUN      ] Integral.Sub
+[       OK ] Integral.Sub   (0.15 us)
+[----------] 2 tests from Integral   (35.54 us total)
+
+[----------] 1 test from String
+[ RUN      ] String.Equality
+scratch/t3.c:27: Failure
+Expected equality of these values:
+    LHS: (const char*) s1 -> "asdf"
+    RHS: (const char*) s2 -> "qwer"
+
+scratch/t3.c:31: Failure
+Expected equality of these values:
+    LHS: (const char*) s1 -> "asdg"
+    RHS: (const char*) s2 -> "asdf"
+
+[  FAILED  ] String.Equality   (86.45 us)
+[----------] 1 test from String   (86.45 us total)
+
+[----------] Global test environment tear-down
+[==========] 3 test from 2 test suites ran.   (121.99 us total)
+[  PASSED  ] 1 test.
+[  FAILED  ] 2 tests, listed below:
+[  FAILED  ] Integral.Add
+[  FAILED  ] String.Equality
+
+2 FAILED TESTS
+```
+
 ## Conclusion
 
-There are still lots of work and optimization to do. The next thing I'd add are the `ASSERT_*` macros. It was a fun project to work on.
+There are still lots of work and optimization to do. The next thing I'd add are the `ASSERT_*` macros. Anyways, was a fun project.
