@@ -105,4 +105,87 @@ Digging through possible solutions, somethings suddenly catches your eye. ELF bi
 
 ## Implementation
 
-### Thinking of the Whole Picture First
+### The Hard Part
+
+Remember the gtest output? It comprehensively reports the passed and failed tests in details. Put the necessary points on a list:
+
+- `x` tests from `y` test suites ran
+- test `foo` of test suite `bar` passed/failed
+- `p` tests passed while `q` tests failed
+- test `foo.bar` took `t` seconds to run
+
+So starting from the most fundamental point, if we provide a `TEST(Suite, Test)` macro, we have to catch whatever string is in `Suite` and `Test`, store them, make unique functions out of them, and store the function pointers. This can be done using a macro trick. You can stringify the macro parameters and attach them together like I did:
+```c
+#define TEST(Suite, Test) \
+    void sohomot_##Suite##_##Test(void);
+```
+
+That means if you defined `TEST(String, Memcpy)`, it would nicely forward declare a function `void sohomot_String_Memcpy(void)` instead. By the time the program would start, the functions would already get allocated valid addresses. So you can easily store the function pointer `sohomot_String_Memcpy` in a variable of type `void (*)(void)`.
+
+Now about the storing part. You need to store 3 things:
+
+- the function pointer: `void (*)(void)`
+- the test suite name: `const char*`
+- the test name: `const char*`
+
+You can build a struct out of these and create an array of that struct. But do you know how many functions you might have? No. Apparently it's possible to calculate the size of `.init_array` but I wanted to keep the complexity to a minimum. So what you can do is, make the struct a linked list and dynamically build a linked list of all the functions in `.init_array`. Performance wise, it might be considered bad design so I might even change it in future.
+
+For now, `sohomot_func_node` is born:
+```c
+typedef void (*sohomot_func)(void);
+
+struct sohomot_func_node
+{
+	sohomot_func func;
+	const char* suite_name;
+	const char* test_name;
+	struct sohomot_func_node* next;
+};
+```
+
+The next part is easy, write a registration function `register_sohomot_func(sohomot_func, const char* const char*)` which registers the function pointer along with stringified test suite and test name.
+
+But the fundamental problem is not yet solved. You wrote the registration function. But WHO calls it? Right? The linked list cannot be built if no one even calls your registration function. Apparently, your registration function should be called by someone, aka, a function that already resides in `.init_array`. How do you send someone to `.init_array`? Right, that's where the compiler extension comes.
+
+`__attribute__((constructor))` is a gcc/clang function attribute that registers the said function to `.init_array`. Say you write:
+```c
+__attribute__((constructor)) static void foo(void)
+{
+    do_bla();
+}
+```
+`foo` would be registered in `.init_array` and `do_bla` would be called before anything in `main()` starts. That's the trick. You have to register a unique function to `.init_array` using `__attribute__((constructor))` and that unique function should call your registration function in it. That's how by the time `main()` start, you'd already have the linked list that you wanted.
+
+But wait, `TEST` has function like body, how to store that? Well that's another easy trick. Remember the forward declaration `void sohomot_##Suite##_##Test(void);`? Well, define it and end the macro! Pretend as if it's the start of your test function.
+
+So the entire `TEST` macro can be written as:
+```c
+#define TEST(Suite, Test) \
+	void sohomot_##Suite##_##Test(void); \
+	__attribute__((constructor)) \
+	static void register_##Suite##_##Test(void) \
+	{ \
+		register_sohomot_func(sohomot_##Suite##_##Test, #Suite, #Test); \
+	} \
+	void sohomot_##Suite##_##Test(void)
+```
+
+And the test in `test.cxx` would be replaced with:
+```c
+void sohomot_Integer_Add(void); \
+__attribute__((constructor)) \
+static void register_Integer_Add(void) \
+{ \
+    register_sohomot_func(sohomot_Integer_Add, "Integer", "Add"); \
+} \
+void sohomot_Integer_Add(void)
+{
+    EXPECT_EQ(add(3, 5), 8);
+    EXPECT_EQ(add(2, 9), 11);
+    EXPECT_EQ(add(3, -5), -2);
+    EXPECT_EQ(add(13, 15), 28);
+    EXPECT_NE(add(33, 55), 8);
+}
+```
+
+Cool right? Yeah.
