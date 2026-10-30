@@ -24,13 +24,11 @@ The purpose of this post is to explain the implementation details and design dec
 Let's first see how gtest works. Say, you write a function `add` that adds two integers and returns the addition. You decide to split the header and implementation in two files `add.hxx` and `add.cxx`.
 
 `add.hxx`:
-
 ```cpp
 int add(int, int);
 ```
 
 `add.cxx`:
-
 ```cpp
 int add(int x, int y)
 {
@@ -41,7 +39,6 @@ int add(int x, int y)
 And then to use the function, you write a program.
 
 `main.cxx`:
-
 ```cpp
 #include "add.hxx"
 
@@ -62,7 +59,6 @@ If you had split that compilation step, you'd see that the compiler first transl
 Now, back to your `add` function. You want to test it using gtest. You write a program.
 
 `test.cxx`:
-
 ```cpp
 #include "add.hxx"
 #include <gtest/gtest.h>
@@ -84,7 +80,6 @@ clang++ -std=c++20 test.cxx add.cxx -lgtest -lgtest_main -o test
 ```
 
 `gtest_main` provides the `main()` to `test` which contains the machinery to initialize and run the tests. Running `test` gets this:
-
 ```
 [==========] Running 1 test from 1 test suite.
 [----------] Global test environment set-up.
@@ -107,3 +102,7 @@ Now let's face the problem. You don't really know how gtest is actually getting 
 ## TA-DA!
 
 Digging through possible solutions, somethings suddenly catches your eye. ELF binaries have a special section called `.init_array`. This section holds an array of function pointers. When a binary is loaded into memory and execution begins, the C runtime steps through `.init_array` and calls each function pointer stored in it. And that happens before `main()` even starts. So what if there was a way to make each `TEST` a function in disguise and auto-register them in `.init_array`? Exactly! That's the exact point development of `sohomot` began.
+
+## Implementation
+
+### Thinking of the Whole Picture First
