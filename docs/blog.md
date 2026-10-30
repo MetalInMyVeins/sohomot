@@ -24,11 +24,13 @@ The purpose of this post is to explain the implementation details and design dec
 Let's first see how gtest works. Say, you write a function `add` that adds two integers and returns the addition. You decide to split the header and implementation in two files `add.hxx` and `add.cxx`.
 
 `add.hxx`:
+
 ```hxx
 int add(int, int);
 ```
 
 `add.cxx`:
+
 ```cxx
 int add(int x, int y)
 {
@@ -39,6 +41,7 @@ int add(int x, int y)
 And then to use the function, you write a program.
 
 `main.cxx`:
+
 ```cxx
 #include "add.hxx"
 
@@ -59,6 +62,7 @@ If you had split that compilation step, you'd see that the compiler first transl
 Now, back to your `add` function. You want to test it using gtest. You write a program.
 
 `test.cxx`:
+
 ```cxx
 #include "add.hxx"
 #include <gtest/gtest.h>
@@ -79,7 +83,8 @@ That's it, that's the test. Notice there's no `main()` in the file because we'd 
 clang++ -std=c++20 test.cxx add.cxx -lgtest -lgtest_main -o test
 ```
 
-`gtest_main` provides the `main()` to `test` which contains code to initialize and run the tests. Running `test` gets this output:
+`gtest_main` provides the `main()` to `test` which contains the machinery to initialize and run the tests. Running `test` gets this:
+
 ```
 [==========] Running 1 test from 1 test suite.
 [----------] Global test environment set-up.
@@ -92,3 +97,9 @@ clang++ -std=c++20 test.cxx add.cxx -lgtest -lgtest_main -o test
 [==========] 1 test from 1 test suite ran. (0 ms total)
 [  PASSED  ] 1 test.
 ```
+
+You can try providing an empty `main()` to your test file and that would override `gtest_main` (if you link it) and you'd see no output.
+
+## Facing the Problem
+
+Now let's face the problem. You don't really know how gtest is actually getting hands on that `TEST` macro and its parameters. I mean, whatever `main()` you write, the point when `main()` starts, you'd either have to be able to parse the `TEST`s somehow, or already have access to the parsed `TEST`s or whatever they are. You look up how gtest does it. Find out it's called static initialization. Good. Then look up how to do static initialization in C and you're cooked. Because in C, variables with static storage duration MUST be initialized with a compile-time constant expression. There's nothing called "runtime dynamic initialization" in standard C. And not only that, even if it was possible, you'd still have to think of a way to denote those `TEST`s in a way so they can be stored.
