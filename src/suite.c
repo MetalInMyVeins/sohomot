@@ -298,6 +298,7 @@ bool run_and_print(void)
 	printf("%s%s%s Global test environment set-up.\n", COLOR_GREEN, \
 			g_bar_minus, COLOR_DEFAULT);
 
+	double global_total_time = 0;
 	for (uint32_t i = 0; i < g_suites_last_index; ++i)
 	{
 		struct test_suite* current_suite = (g_suites + i);
@@ -310,21 +311,31 @@ bool run_and_print(void)
 		printf("%s%s%s %u %s from %s\n", COLOR_GREEN, g_bar_minus, \
 				COLOR_DEFAULT, per_suite_test, str_tests, \
 				current_suite->suite_name);
+		double per_suite_time = 0;
 		for (uint32_t j = 0; j < per_suite_test; ++j)
 		{
 			printf("%s%s%s %s.%s\n", COLOR_GREEN, g_bar_run, \
 					COLOR_DEFAULT, current_suite->suite_name, \
 					current_holder[j].test_name);
+			uint64_t now_ns = get_ns();
 			current_holder[j].func();
 			if (g_expect_passed == true)
-				printf("%s%s%s %s.%s\n", COLOR_GREEN, g_bar_ok, \
+			{
+				double temp_us = (double)(get_ns() - now_ns) / 1000;
+				printf("%s%s%s %s.%s   (%.2lf us)\n", COLOR_GREEN, g_bar_ok, \
 						COLOR_DEFAULT, current_suite->suite_name, \
-						current_holder[j].test_name);
+						current_holder[j].test_name, \
+					    temp_us);
+				per_suite_time += temp_us;
+			}
 			if (g_expect_passed == false)
 			{
-				printf("%s%s%s %s.%s\n", COLOR_RED, g_bar_failed, \
+				double temp_us = (double)(get_ns() - now_ns) / 1000;
+				printf("%s%s%s %s.%s   (%.2lf us)\n", COLOR_RED, g_bar_failed, \
 						COLOR_DEFAULT, current_suite->suite_name, \
-						current_holder[j].test_name);
+						current_holder[j].test_name, \
+					    temp_us);
+				per_suite_time += temp_us;
 				const char* suite = current_suite->suite_name;
 				const char* test = current_holder[j].test_name;
 				char* suite_test_concat = calloc(strlen(suite) + 1 + strlen(test), \
@@ -352,15 +363,17 @@ bool run_and_print(void)
 				++n_failed;
 			}
 		}
-		printf("%s%s%s %u %s from %s\n\n", COLOR_GREEN, g_bar_minus, \
+		printf("%s%s%s %u %s from %s   (%.2lf us total)\n\n", COLOR_GREEN, g_bar_minus, \
 				COLOR_DEFAULT, per_suite_test, str_tests, \
-				current_suite->suite_name);
+				current_suite->suite_name, per_suite_time);
+		global_total_time += per_suite_time;
+		per_suite_time = 0;
 	}
 	printf("%s%s%s Global test environment tear-down\n", COLOR_GREEN, \
 			g_bar_minus, COLOR_DEFAULT);
-	printf("%s%s%s %u %s from %u test %s ran.\n", COLOR_GREEN, \
+	printf("%s%s%s %u %s from %u test %s ran.   (%.2lf us total)\n", COLOR_GREEN, \
 			g_bar_equal, COLOR_DEFAULT, total_tests, str_tests, \
-			total_suites, str_suites);
+			total_suites, str_suites, global_total_time);
 	uint32_t n_passed = total_tests - n_failed;
 	if (n_passed == 1)
 		printf("%s%s%s %u test.\n", COLOR_GREEN, g_bar_passed, \

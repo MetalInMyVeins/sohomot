@@ -27,5 +27,6 @@ bool setup_suites(struct sohomot_func_node* nodes, \
 void clean_suites();
 bool run_and_print(void);
 bool has_failed_test(void);
+uint64_t get_ns(void);
 
 #endif // SUITE_H
