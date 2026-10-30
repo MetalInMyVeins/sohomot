@@ -140,6 +140,10 @@ Expected equality of these values:
 ```
 Execution time of each test is measured in nanoseconds, cast to microseconds, and then reported.
 
+# Performance
+
+19 test suites containing 55 tests in total were benchmarked against both `sohomot` and `gtest`. Unsurprisingly, `sohomot` outperforms `gtest` by `2.5x` in execution speed while using `30%` less memory. As `sohomot` is still new, there are lots of places where I took bad decisions. I believe optimizing them would improve performance even more.
+
 # LLM Ban
 
 Except for the AI-generated image, this repo is entirely human-written.
