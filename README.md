@@ -27,6 +27,8 @@ I always heavily relied on gtest while working with C++. But for being written i
 
 "Sohomot" is a bangla word which literally means "agreement" or "in agreement with" in a joking tone.
 
+A blog post discussing the implementation detail can be found here ![https://metalinmyveins.github.io/sohomot](https://metalinmyveins.github.io/sohomot)
+
 # Dependency:
 
 - A C23 compliant compiler
@@ -139,6 +141,10 @@ Expected equality of these values:
 2 FAILED TESTS
 ```
 Execution time of each test is measured in nanoseconds, cast to microseconds, and then reported.
+
+# Debug
+
+If you want to debug a test case `TEST(Foo, Bar)`, in gdb, set breakpoint at `sohomot_Foo_Bar` and `run`.
 
 # Performance
 
