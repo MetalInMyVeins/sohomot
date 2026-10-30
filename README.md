@@ -31,7 +31,7 @@ I always heavily relied on gtest while working with C++. But for being written i
 
 - A C23 compliant compiler
 - Any linker
-- Linux (it uses exactly one compiler extension and one POSIX function, so it shouldn't be portable out of the box)
+- Linux (other than C23, it uses exactly one compiler extension and one POSIX function, so it shouldn't be portable out of the box)
 
 # Usage
 
