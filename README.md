@@ -103,39 +103,42 @@ The output quality is arguably better than gtest:
 [----------] Global test environment set-up.
 [----------] 2 tests from Integral
 [ RUN      ] Integral.Add
-scratch/t1.c:9: Failure
+scratch/t3.c:10: Failure
 Expectation not met for these values:
     Should be: LHS < RHS
     LHS: (int32_t) x -> 222 (0xde)
     RHS: (int32_t) y -> 222 (0xde)
 
-[  FAILED  ] Integral.Add
+[  FAILED  ] Integral.Add   (35.38 us)
 [ RUN      ] Integral.Sub
-[       OK ] Integral.Sub
-[----------] 2 tests from Integral
+[       OK ] Integral.Sub   (0.15 us)
+[----------] 2 tests from Integral   (35.54 us total)
 
 [----------] 1 test from String
 [ RUN      ] String.Equality
-scratch/t1.c:26: Failure
+scratch/t3.c:27: Failure
 Expected equality of these values:
     LHS: (const char*) s1 -> "asdf"
     RHS: (const char*) s2 -> "qwer"
 
-scratch/t1.c:30: Failure
+scratch/t3.c:31: Failure
 Expected equality of these values:
     LHS: (const char*) s1 -> "asdg"
     RHS: (const char*) s2 -> "asdf"
 
-[  FAILED  ] String.Equality
-[----------] 1 test from String
+[  FAILED  ] String.Equality   (86.45 us)
+[----------] 1 test from String   (86.45 us total)
 
 [----------] Global test environment tear-down
-[==========] 3 test from 2 test suites ran.
+[==========] 3 test from 2 test suites ran.   (121.99 us total)
 [  PASSED  ] 1 test.
 [  FAILED  ] 2 tests, listed below:
 [  FAILED  ] Integral.Add
 [  FAILED  ] String.Equality
+
+2 FAILED TESTS
 ```
+Execution time of each test is measured in nanosecond and then cast to microsecond and reported.
 
 # LLM Ban
 
