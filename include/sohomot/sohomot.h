@@ -65,6 +65,8 @@ void print_str(const char* type, const char* name, \
 		const char* x, const char* side);
 void print_bool(const char* type, const char* name, \
 		bool x, const char* side);
+void print_void_ptr(const char* type, const char* name, \
+		const void* x, const char* side);
 void print_default(void);
 
 #define TYPESTR(X) _Generic((X), \
@@ -85,6 +87,8 @@ void print_default(void);
 	char*: "char*", \
 	const char*: "const char*", \
 	bool: "bool", \
+	void*: "void*", \
+	const void*: "const void*", \
 	default: "unknown" \
 )
 
@@ -106,6 +110,8 @@ void print_default(void);
 	char*: print_str, \
 	const char*: print_str, \
 	bool: print_bool, \
+	void*: print_void_ptr, \
+	const void*: print_void_ptr, \
 	default: print_default \
 )(T, Y, X, Z)
 
