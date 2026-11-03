@@ -532,6 +532,13 @@ void print_str(const char* type, const char* name, \
 			side, type, name, x);
 }
 
+void print_bool(const char* type, const char* name, \
+		bool x, const char* side)
+{
+	printf("    %s (%s) %s -> %s\n", \
+			side, type, name, x? "true" : "false");
+}
+
 void print_default(void)
 {
 	printf("Unknown type\n");

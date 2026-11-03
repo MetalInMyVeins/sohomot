@@ -63,6 +63,8 @@ void print_float(const char* type, const char* name, \
 		const float x, const char* side);
 void print_str(const char* type, const char* name, \
 		const char* x, const char* side);
+void print_bool(const char* type, const char* name, \
+		bool x, const char* side);
 void print_default(void);
 
 #define TYPESTR(X) _Generic((X), \
@@ -103,6 +105,7 @@ void print_default(void);
 	float: print_float, \
 	char*: print_str, \
 	const char*: print_str, \
+	bool: print_bool, \
 	default: print_default \
 )(T, Y, X, Z)
 
