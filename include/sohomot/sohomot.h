@@ -67,6 +67,8 @@ void print_bool(const char* type, const char* name, \
 		bool x, const char* side);
 void print_void_ptr(const char* type, const char* name, \
 		const void* x, const char* side);
+void print_int8_ptr(const char* type, const char* name, \
+		const int8_t* x, const char* side);
 void print_int32_ptr(const char* type, const char* name, \
 		const int32_t* x, const char* side);
 void print_default(void);
@@ -91,6 +93,8 @@ void print_default(void);
 	bool: "bool", \
 	void*: "void*", \
 	const void*: "const void*", \
+	int8_t*: "int8_t*", \
+	const int8_t*: "const int8_t*", \
 	int32_t*: "int32_t*", \
 	const int32_t*: "const int32_t*", \
 	default: "unknown" \
@@ -116,6 +120,8 @@ void print_default(void);
 	bool: print_bool, \
 	void*: print_void_ptr, \
 	const void*: print_void_ptr, \
+	int8_t*: print_int8_ptr, \
+	const int8_t*: print_int8_ptr, \
 	int32_t*: print_int32_ptr, \
 	const int32_t*: print_int32_ptr, \
 	default: print_default \

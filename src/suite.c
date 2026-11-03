@@ -550,6 +550,17 @@ void print_void_ptr(const char* type, const char* name, \
 				side, type, name, x);
 }
 
+void print_int8_ptr(const char* type, const char* name, \
+		const int8_t* x, const char* side)
+{
+	if (x == nullptr)
+		printf("    %s (%s) %s -> %s\n", \
+				side, type, name, "nullptr");
+	else
+		printf("    %s (%s) %s -> %p\n", \
+				side, type, name, (const void*)x);
+}
+
 void print_int32_ptr(const char* type, const char* name, \
 		const int32_t* x, const char* side)
 {
