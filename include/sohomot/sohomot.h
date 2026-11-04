@@ -67,10 +67,6 @@ void print_bool(const char* type, const char* name, \
 		bool x, const char* side);
 void print_void_ptr(const char* type, const char* name, \
 		const void* x, const char* side);
-void print_int8_ptr(const char* type, const char* name, \
-		const int8_t* x, const char* side);
-void print_int32_ptr(const char* type, const char* name, \
-		const int32_t* x, const char* side);
 void print_default(void);
 
 #define TYPESTR(X) _Generic((X), \
