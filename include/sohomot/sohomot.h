@@ -95,8 +95,16 @@ void print_default(void);
 	const void*: "const void*", \
 	int8_t*: "int8_t*", \
 	const int8_t*: "const int8_t*", \
+	int16_t*: "int16_t*", \
+	const int16_t*: "const int16_t*", \
 	int32_t*: "int32_t*", \
 	const int32_t*: "const int32_t*", \
+	int64_t*: "int64_t*", \
+	const int64_t*: "const int64_t*", \
+	unsigned long*: "unsigned long*", \
+	const unsigned long*: "const unsigned long*", \
+	unsigned long long*: "unsigned long long*", \
+	const unsigned long long*: "const unsigned long long*", \
 	default: "unknown" \
 )
 
@@ -120,10 +128,18 @@ void print_default(void);
 	bool: print_bool, \
 	void*: print_void_ptr, \
 	const void*: print_void_ptr, \
-	int8_t*: print_int8_ptr, \
-	const int8_t*: print_int8_ptr, \
-	int32_t*: print_int32_ptr, \
-	const int32_t*: print_int32_ptr, \
+	int8_t*: print_void_ptr, \
+	const int8_t*: print_void_ptr, \
+	int16_t*: print_void_ptr, \
+	const int16_t*: print_void_ptr, \
+	int32_t*: print_void_ptr, \
+	const int32_t*: print_void_ptr, \
+	int64_t*: print_void_ptr, \
+	const int64_t*: print_void_ptr, \
+	unsigned long*: print_void_ptr, \
+	const unsigned long*: print_void_ptr, \
+	unsigned long long*: print_void_ptr, \
+	const unsigned long long*: print_void_ptr, \
 	default: print_default \
 )(T, Y, X, Z)
 
