@@ -1,6 +1,7 @@
 #ifndef SOHOMOT_H
 #define SOHOMOT_H
 
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -91,16 +92,26 @@ void print_default(void);
 	const void*: "const void*", \
 	int8_t*: "int8_t*", \
 	const int8_t*: "const int8_t*", \
+	uint8_t*: "uint8_t*", \
+	const uint8_t*: "const uint8_t*", \
 	int16_t*: "int16_t*", \
 	const int16_t*: "const int16_t*", \
+	uint16_t*: "uint16_t*", \
+	const uint16_t*: "const uint16_t*", \
 	int32_t*: "int32_t*", \
 	const int32_t*: "const int32_t*", \
+	uint32_t*: "uint32_t*", \
+	const uint32_t*: "const uint32_t*", \
 	int64_t*: "int64_t*", \
 	const int64_t*: "const int64_t*", \
-	unsigned long*: "unsigned long*", \
-	const unsigned long*: "const unsigned long*", \
+	uint64_t*: "uint64_t*", \
+	const uint64_t*: "const uint64_t*", \
+	long long*: "long long*", \
+	const long long*: "const long long*", \
 	unsigned long long*: "unsigned long long*", \
 	const unsigned long long*: "const unsigned long long*", \
+	nullptr_t: "nullptr_t", \
+	bool*: "bool*", \
 	default: "unknown" \
 )
 
@@ -126,16 +137,26 @@ void print_default(void);
 	const void*: print_void_ptr, \
 	int8_t*: print_void_ptr, \
 	const int8_t*: print_void_ptr, \
+	uint8_t*: print_void_ptr, \
+	const uint8_t*: print_void_ptr, \
 	int16_t*: print_void_ptr, \
 	const int16_t*: print_void_ptr, \
+	uint16_t*: print_void_ptr, \
+	const uint16_t*: print_void_ptr, \
 	int32_t*: print_void_ptr, \
 	const int32_t*: print_void_ptr, \
+	uint32_t*: print_void_ptr, \
+	const uint32_t*: print_void_ptr, \
 	int64_t*: print_void_ptr, \
 	const int64_t*: print_void_ptr, \
-	unsigned long*: print_void_ptr, \
-	const unsigned long*: print_void_ptr, \
+	uint64_t*: print_void_ptr, \
+	const uint64_t*: print_void_ptr, \
+	long long*: print_void_ptr, \
+	const long long*: print_void_ptr, \
 	unsigned long long*: print_void_ptr, \
 	const unsigned long long*: print_void_ptr, \
+	nullptr_t: print_void_ptr, \
+	bool*: print_void_ptr, \
 	default: print_default \
 )(T, Y, X, Z)
 

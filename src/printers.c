@@ -97,8 +97,12 @@ void print_float(const char* type, const char* name, \
 void print_str(const char* type, const char* name, \
 		const char* x, const char* side)
 {
-	printf("    %s (%s) %s -> \"%s\"\n", \
-			side, type, name, x);
+	if (x != nullptr)
+		printf("    %s (%s) %s -> \"%s\"\n", \
+				side, type, name, x);
+	else
+		printf("    %s (%s) %s -> %s\n", \
+				side, type, name, "nullptr");
 }
 
 void print_bool(const char* type, const char* name, \
