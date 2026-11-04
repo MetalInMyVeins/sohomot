@@ -142,6 +142,36 @@ Expected equality of these values:
 ```
 Execution time of each test is measured in nanoseconds, cast to microseconds, and then reported.
 
+## Adding to a Projet
+
+The simplest way to add `sohomot` to your repo is as a submodule.
+
+```bash
+git submodule add https://github.com/MetalInMyVeins/sohomot vendor/sohomot
+```
+
+This would add `sohomot` to your repo in the `vendor/` directory. Example `Makefile` snippet:
+
+```make
+.PHONY: sohomot
+sohomot:
+        $(MAKE) -C vendor/sohomot rel
+
+SOHOMOT_INCLUDE_DIR := vendor/sohomot/include
+SOHOMOT_LIBRARY_DIR := vendor/sohomot/build/rel/lib
+SOHOMOT_LIBRARY := sohomot_main
+
+# do not provide `main()` in $(MY_SRC)
+test_binary: $(MY_SRC)
+        clang -std=c23 $^ -o $@ \
+                -I$(SOHOMOT_INCLUDE_DIR) \
+                -L$(SOHOMOT_LIBRARY_DIR) \
+                -Wl,-rpath=$(SOHOMOT_LIBRARY_DIR) \
+                -l$(sohomot_main)
+```
+
+For updating the submodule, fetch tags and pin your repo to the latest tag.
+
 # Debug
 
 If you want to debug a test case `TEST(Foo, Bar)`, in gdb, set breakpoint at `sohomot_Foo_Bar` and `run`.
