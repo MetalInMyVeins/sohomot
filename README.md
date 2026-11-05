@@ -1,5 +1,8 @@
 <h1 align="center">sohomot</h1>
 
+[![clang](https://github.com/MetalInMyVeins/sohomot/actions/workflows/clang.yaml/badge.svg)](https://github.com/MetalInMyVeins/sohomot/actions/workflows/clang.yaml)
+[![gcc](https://github.com/MetalInMyVeins/sohomot/actions/workflows/gcc.yaml/badge.svg)](https://github.com/MetalInMyVeins/sohomot/actions/workflows/gcc.yaml)
+
 <p align="center">
   <img src="./res/sohomot_bangla.png" />
 </p>
