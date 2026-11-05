@@ -215,7 +215,7 @@ Cool right? Yeah.
 
 Now that you got your hands on linked list containing structs containing all the test functions, the next part is easy, although not small by any means. You'd be able to notice that a test case is part of a test suite. You'd run `x` number of test cases from `y` number of test suites and report a pretty output. For that, you'd need to differentiate each test case by their parent test suite.
 
-For that, my idea was really simple. Build a struct `test_suite` which would have its own name and would hold a dynamic array of its children test cases, aka, `sohomot_func_node`s which have the same parent suite name as the `test_suite`'s name. And finally build a dynamic AoS of `test_suite`s. Later when you'd walk the linked list of test cases, you'd dynamically populate the array of `test_suite`s and store `sohomot_func_node` children in them as required (currently there's a minor bottleneck in the procedure which I'd solve later).
+For that, my idea was really simple. Build a struct `test_suite` which would have its own name and would hold a dynamic array of its children test cases, aka, `sohomot_func_node`s which have the same parent suite name as the `test_suite`'s name. And finally build a dynamic AoS of `test_suite`s. Later when you'd walk the linked list of test cases, you'd dynamically populate the array of `test_suite`s and store `sohomot_func_node` children in them as required.
 
 This is the so called `test_suite`:
 ```c

@@ -15,8 +15,6 @@ struct sohomot_func_node
 
 static struct sohomot_func_node* g_sfn = nullptr;
 static struct sohomot_func_node* g_sfn_head = nullptr;
-static uint32_t g_node_len = 0;
-static struct sohomot_func_node* arr_func_nodes = nullptr;
 
 void register_sohomot_func(sohomot_func func, \
 		const char* suitename, const char* testname)
@@ -35,7 +33,6 @@ void register_sohomot_func(sohomot_func func, \
 		g_sfn->test_name = testname;
 		g_sfn->next = nullptr;
 		g_sfn_head = g_sfn;
-		++g_node_len;
 	}
 	else
 	{
@@ -51,51 +48,23 @@ void register_sohomot_func(sohomot_func func, \
 		g_sfn->suite_name = suitename;
 		g_sfn->test_name = testname;
 		g_sfn->next = nullptr;
-		++g_node_len;
 	}
 }
 
-bool init_arr_func_nodes(void)
+void free_sohomot_funcs(void)
 {
-	g_sfn = g_sfn_head;
-	arr_func_nodes = calloc(g_node_len, sizeof(*g_sfn));
-	if (arr_func_nodes == nullptr)
-		return false;
-	errno = 0;
-
-	uint32_t i = 0;
-	while (g_sfn != nullptr)
+	struct sohomot_func_node* temp = g_sfn_head;
+	while (temp != nullptr)
 	{
-		arr_func_nodes[i] = *g_sfn;
-		g_sfn = g_sfn->next;
-		++i;
+		temp = g_sfn_head->next;
+		free(g_sfn_head);
+		g_sfn_head = temp;
 	}
-
-	struct sohomot_func_node* temp = nullptr;
-	g_sfn = g_sfn_head;
-	while (g_sfn != nullptr)
-	{
-		temp = g_sfn->next;
-		free(g_sfn);
-		g_sfn = temp;
-	}
-	return true;
-}
-
-void free_arr_func_nodes(void)
-{
-	free(arr_func_nodes);
-	arr_func_nodes = nullptr;
 }
 
 struct sohomot_func_node* get_nodes(void)
 {
-	return arr_func_nodes;
-}
-
-uint32_t get_total_nodes(void)
-{
-	return g_node_len;
+	return g_sfn_head;
 }
 
 bool do_nodes_match(struct sohomot_func_node* n1, \

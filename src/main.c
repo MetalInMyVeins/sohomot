@@ -10,18 +10,13 @@ int main(void)
 	setvbuf(stdout, nullptr, _IONBF, 0);
 	setvbuf(stderr, nullptr, _IONBF, 0);
 
-	if (init_arr_func_nodes() == false)
-	{
-		fprintf(stderr, "sohomot: %s\n", strerror(errno));
-		return EXIT_FAILURE;
-	}
 	if (suites_init() == false)
 	{
 		fprintf(stderr, "sohomot: %s\n", strerror(errno));
 		return EXIT_FAILURE;
 	}
 
-	bool suites_setup = setup_suites(get_nodes(), get_total_nodes());
+	bool suites_setup = setup_suites(get_nodes());
 	if (suites_setup == false)
 	{
 		fprintf(stderr, "sohomot: %s\n", strerror(errno));
@@ -37,7 +32,7 @@ int main(void)
 
 	clean_suites();
 	suites_free();
-	free_arr_func_nodes();
+	free_sohomot_funcs();
 
 	if (has_failed_test() == true)
 		return EXIT_FAILURE;

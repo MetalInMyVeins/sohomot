@@ -142,11 +142,12 @@ static void push_suite_in_suites(struct test_suite* suite)
 	++g_suites_last_index;
 }
 
-bool setup_suites(struct sohomot_func_node* nodes, uint32_t nodes_len)
+bool setup_suites(struct sohomot_func_node* node_head)
 {
-	for (uint32_t i = 0; i < nodes_len; ++i)
+	struct sohomot_func_node* head = node_head;
+	while (head != nullptr)
 	{
-		struct sohomot_func_node* current_node = nodes + i;
+		struct sohomot_func_node* current_node = head;
 		struct test_suite* found_suite = search_belonging_suite(current_node);
 
 		if (found_suite)
@@ -174,6 +175,7 @@ bool setup_suites(struct sohomot_func_node* nodes, uint32_t nodes_len)
 			push_suite_in_suites(new_suite);
 			free_empty_suite(new_suite);
 		}
+		head = head->next;
 	}
 	return true;
 }
