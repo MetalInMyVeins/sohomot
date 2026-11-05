@@ -21,5 +21,11 @@ jobs:
       - name: Install Dependencies
         run: sudo apt-get update && sudo apt-get install -y build-essential clang lld
 
-      - name: Build with Clang
-        run: make check CC=clang LINKER=ld.lld
+      - name: Clang Debug Build
+        run: make deb CC=clang LINKER=ld.lld
+
+      - name: Clang Sanitizer Build
+        run: make san CC=clang LINKER=ld.lld
+
+      - name: Clang Release Build
+        run: make rel CC=clang LINKER=ld.lld
