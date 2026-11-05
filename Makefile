@@ -78,7 +78,7 @@ TARGET_SAN := sohomot_main_san
 TARGET_REL := sohomot_main
 VERSION_MAJOR := 0
 VERSION_MINOR := 2
-VERSION_PATCH := 1
+VERSION_PATCH := 2
 
 SRC_ALL := $(wildcard $(SRCDIR)/*.c)
 SRCS_EXCLUDE :=
