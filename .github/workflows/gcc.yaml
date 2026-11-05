@@ -22,7 +22,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y build-essential
 
       - name: GCC Debug Build
-        run: make deb CC=gcc LINKER=ld
+        run: make deb CC=gcc LINKER=bfd
 
       - name: GCC Release Build
-        run: make rel CC=gcc LINKER=ld
+        run: make rel CC=gcc LINKER=bfd
