@@ -163,8 +163,8 @@ void print_default(void);
 #define EXPECT_EQ(A, B) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
-		typeof(B) _b = (B); \
+		auto _a = (A); \
+		auto _b = (B); \
 		if (!(_a == _b)) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -179,8 +179,8 @@ void print_default(void);
 #define EXPECT_NE(A, B) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
-		typeof(B) _b = (B); \
+		auto _a = (A); \
+		auto _b = (B); \
 		if (_a == _b) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -196,8 +196,8 @@ void print_default(void);
 #define EXPECT_LT(A, B) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
-		typeof(B) _b = (B); \
+		auto _a = (A); \
+		auto _b = (B); \
 		if (_a >= _b) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -213,8 +213,8 @@ void print_default(void);
 #define EXPECT_LE(A, B) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
-		typeof(B) _b = (B); \
+		auto _a = (A); \
+		auto _b = (B); \
 		if (_a > _b) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -230,8 +230,8 @@ void print_default(void);
 #define EXPECT_GT(A, B) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
-		typeof(B) _b = (B); \
+		auto _a = (A); \
+		auto _b = (B); \
 		if (_a <= _b) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -247,8 +247,8 @@ void print_default(void);
 #define EXPECT_GE(A, B) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
-		typeof(B) _b = (B); \
+		auto _a = (A); \
+		auto _b = (B); \
 		if (_a < _b) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -264,8 +264,8 @@ void print_default(void);
 #define EXPECT_DOUBLE_EQ(A, B) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
-		typeof(B) _b = (B); \
+		auto _a = (A); \
+		auto _b = (B); \
 		if (!expect_double_eq(_a, _b)) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -281,8 +281,8 @@ void print_default(void);
 #define EXPECT_LONG_DOUBLE_EQ(A, B) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
-		typeof(B) _b = (B); \
+		auto _a = (A); \
+		auto _b = (B); \
 		if (!expect_long_double_eq(_a, _b)) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -297,8 +297,8 @@ void print_default(void);
 #define EXPECT_FLOAT_EQ(A, B) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
-		typeof(B) _b = (B); \
+		auto _a = (A); \
+		auto _b = (B); \
 		if (!expect_float_eq(_a, _b)) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -378,7 +378,7 @@ void print_default(void);
 #define EXPECT_TRUE(A) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
+		auto _a = (A); \
 		if (!(_a == true)) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -393,7 +393,7 @@ void print_default(void);
 #define EXPECT_FALSE(A) \
 	do \
 	{ \
-		typeof(A) _a = (A); \
+		auto _a = (A); \
 		if (!(_a == false)) \
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
