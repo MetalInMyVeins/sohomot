@@ -195,10 +195,10 @@ void set_expect_passed(bool passed)
 
 bool expect_streq(const char* a, const char* b)
 {
-	if (a == nullptr || b == nullptr)
-		return false;
 	if (a == b)
 		return true;
+	if (a == nullptr || b == nullptr)
+		return false;
 
 	bool status = true;
 	while (*a != '\0' && *a == *b)
@@ -213,10 +213,10 @@ bool expect_streq(const char* a, const char* b)
 
 bool expect_strcase_eq(const char* a, const char* b)
 {
-	if (a == nullptr || b == nullptr)
-		return false;
 	if (a == b)
 		return true;
+	if (a == nullptr || b == nullptr)
+		return false;
 
 	bool status = true;
 	while (*a != '\0' && tolower(*a) == tolower(*b))
