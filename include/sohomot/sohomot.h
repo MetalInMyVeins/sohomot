@@ -22,10 +22,10 @@ bool expect_double_eq(const double a, const double b);
 bool expect_long_double_eq(const long double a, const long double b);
 bool expect_float_eq(const float a, const float b);
 
-static const char* str_equality = "Expected equality of these values:";
-static const char* str_expectation_not_met = "Expectation not met for these values:";
-static const char* str_lhs = "LHS:";
-static const char* str_rhs = "RHS:";
+[[maybe_unused]] static const char* str_equality = "Expected equality of these values:";
+[[maybe_unused]] static const char* str_expectation_not_met = "Expectation not met for these values:";
+[[maybe_unused]] static const char* str_lhs = "LHS:";
+[[maybe_unused]] static const char* str_rhs = "RHS:";
 
 #define TEST(Suite, Test) \
 	void sohomot_##Suite##_##Test(void); \
@@ -185,7 +185,8 @@ void print_default(void);
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_expectation_not_met); \
-			printf("    Should be: LHS != RHS\n"); \
+			printf("    Should be: %s != %s\n", \
+					str_lhs, str_rhs); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
 			printf("\n"); \
@@ -202,7 +203,8 @@ void print_default(void);
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_expectation_not_met); \
-			printf("    Should be: LHS < RHS\n"); \
+			printf("    Should be: %s < %s\n", \
+					str_lhs, str_rhs); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
 			printf("\n"); \
@@ -219,7 +221,8 @@ void print_default(void);
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_expectation_not_met); \
-			printf("    Should be: LHS <= RHS\n"); \
+			printf("    Should be: %s <= %s\n", \
+					str_lhs, str_rhs); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
 			printf("\n"); \
@@ -236,7 +239,8 @@ void print_default(void);
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_expectation_not_met); \
-			printf("    Should be: LHS > RHS\n"); \
+			printf("    Should be: %s > %s\n", \
+					str_lhs, str_rhs); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
 			printf("\n"); \
@@ -253,7 +257,8 @@ void print_default(void);
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_expectation_not_met); \
-			printf("    Should be: LHS >= RHS\n"); \
+			printf("    Should be: %s >= %s\n", \
+					str_lhs, str_rhs); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
 			printf("\n"); \
@@ -335,7 +340,8 @@ void print_default(void);
 		{ \
 			printf("%s:%d: Failure\n", __FILE__, __LINE__); \
 			printf("%s\n", str_expectation_not_met); \
-			printf("    Should be: LHS != RHS\n"); \
+			printf("    Should be: %s != %s\n", \
+					str_lhs, str_rhs); \
 			PRINT(TYPESTR(A), #A, A, str_lhs); \
 			PRINT(TYPESTR(B), #B, B, str_rhs); \
 			printf("\n"); \
